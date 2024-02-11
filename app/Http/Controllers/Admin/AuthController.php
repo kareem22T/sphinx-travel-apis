@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    use DataFormController;
     public function login(Request $request)
     {
         $createAdmin = Admin::all()->count() > 0 ? '' : Admin::create(['full_name' => 'Master Admin', 'phone' => '0123456789', 'email' => 'sphinx.admin@gmail.com', 'password' => Hash::make('admin'), "role" => "Master"]);
@@ -32,11 +33,23 @@ class AuthController extends Controller
 
         if (Auth::guard('admin')->attempt($credentials)) {
             $user = Auth::guard("admin")->user();
+            if ($user->tokens())
+                $user->tokens()->delete();
             $token = $user->createToken('token')->plainTextToken;
-            return $this->jsonData(true, null, 'Successfully Operation', [], ['token' => $token]);
+            $user->idToken = $user->id;
+            $user->refreshToken = $token;
+            $user->expiresIn = 3600;
+            $user->registered = true;
+            return $user;
         }
 
-        return $this->jsonData(false, null, 'Faild Operation', ['Email or password is not correct!'], []);
+        return response()->json([
+            "code" => 400,
+            "message" => "INVALID_PASSWORD",
+            "error"=> [
+                "message" => "INVALID_PASSWORD"
+            ]
+        ], 400);
     }
 
 }
