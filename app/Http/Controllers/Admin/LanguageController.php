@@ -12,15 +12,15 @@ class LanguageController extends Controller
     use DataFormController;
 
     public function get() {
-        return $currencies = Language::latest()->select("id", "code", "name")->get();
+        return $currencies = Language::latest()->select("id", "key", "name")->get();
     }
 
     public function add(Request $request) {
         $validator = Validator::make($request->all(), [
-            'code' => 'required',
+            'key' => 'required',
             'name' => 'required',
         ], [
-            'code.required' => 'please enter language code',
+            'key.required' => 'please enter language key',
             'name.required' => 'please enter language name',
         ]);
 
@@ -29,7 +29,7 @@ class LanguageController extends Controller
         }
 
         $crete_language = Language::create([
-            "code" => $request->code,
+            "key" => $request->key,
             "name" => $request->name
         ]);
 
@@ -40,10 +40,10 @@ class LanguageController extends Controller
     public function update(Request $request) {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'code' => 'required',
+            'key' => 'required',
             'name' => 'required',
         ], [
-            'code.required' => 'please enter language code',
+            'key.required' => 'please enter language key',
             'name.required' => 'please enter language name',
         ]);
 
@@ -52,7 +52,7 @@ class LanguageController extends Controller
         }
 
         $currnecy = Language::find($request->id);
-        $currnecy->code = $request->code;
+        $currnecy->key = $request->key;
         $currnecy->name = $request->name;
         $currnecy->save();
 
