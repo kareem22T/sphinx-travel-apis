@@ -4,13 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\HotelController;
+use App\Http\Controllers\Admin\TourController;
+use App\Http\Controllers\Admin\FeatureController;
+use App\Http\Controllers\Admin\ReasonController;
 
 
 
 // Auth Routes
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware(["auth:sanctum,admin"])->group(function () {
+// Route::middleware(["auth:sanctum,admin"])->group(function () {
     // Currencies
     Route::prefix("currencies")->group(function () {
         Route::get("/", [CurrencyController::class, 'get']);
@@ -26,4 +30,37 @@ Route::middleware(["auth:sanctum,admin"])->group(function () {
         Route::put("/update", [LanguageController::class, 'update']);
         Route::post("/delete", [LanguageController::class, 'delete']);
     });
-});
+
+    // Hotels
+    Route::prefix("hotels")->group(function () {
+        Route::get("/", [HotelController::class,'get']);
+        Route::post("/add", [HotelController::class,'create']);
+        Route::post("/update", [HotelController::class,'update']);
+        Route::post("/delete", [HotelController::class,'delete']);
+        Route::post("/hotel", [HotelController::class,'hotel']);
+        Route::post("/room", [HotelController::class,'room']);
+        Route::post("/room/add", [HotelController::class,'createRoom']);
+        Route::post("/room/delete", [HotelController::class,'deleteRoom']);
+    });
+    
+    // Tours
+    Route::prefix("tours")->group(function () {
+        Route::post("/add", [TourController::class,'create']);
+    });
+    
+    // Features
+    Route::prefix("features")->group(function () {
+        Route::get("/", [FeatureController::class,'get']);
+        Route::post("/add", [FeatureController::class,'add']);
+        Route::post("/update", [FeatureController::class,'update']);
+        Route::post("/delete", [FeatureController::class,'delete']);
+    });
+
+    // Reasons
+    Route::prefix("reasons")->group(function () {
+        Route::get("/", [ReasonController::class,'get']);
+        Route::post("/add", [ReasonController::class,'add']);
+        Route::post("/update", [ReasonController::class,'update']);
+        Route::post("/delete", [ReasonController::class,'delete']);
+    });
+// });

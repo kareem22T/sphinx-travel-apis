@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Language;
 use App\Traits\DataFormController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class LanguageController extends Controller
 {
     use DataFormController;
 
     public function get() {
-        return $currencies = Language::latest()->select("id", "key", "name")->get();
+        return $currencies = Language::select("id", "key", "name")->get();
     }
 
     public function add(Request $request) {
@@ -29,7 +31,7 @@ class LanguageController extends Controller
         }
 
         $crete_language = Language::create([
-            "key" => $request->key,
+            "key" => Str::upper($request->key),
             "name" => $request->name
         ]);
 
@@ -52,7 +54,7 @@ class LanguageController extends Controller
         }
 
         $currnecy = Language::find($request->id);
-        $currnecy->key = $request->key;
+        $currnecy->key = Str::upper($request->key);
         $currnecy->name = $request->name;
         $currnecy->save();
 

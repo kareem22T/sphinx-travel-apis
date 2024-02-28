@@ -14,4 +14,9 @@ class Currency extends Model
     ];
 
     public $table = "currencies";
+
+    public function names()
+    {
+        return $this->hasMany('App\Models\CurrencyName', 'currency_id');
+    }    
 }
