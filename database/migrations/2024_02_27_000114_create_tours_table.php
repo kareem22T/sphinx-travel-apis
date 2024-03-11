@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->id();
-            $table->string('depature', 100);
+            $table->string('expired_date', 100);
             $table->smallInteger('duration')->default(12);
             $table->smallInteger('min_participant')->default(12);
             $table->smallInteger('max_participant')->default(12);

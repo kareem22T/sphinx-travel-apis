@@ -45,6 +45,7 @@ Route::post('/login', [AuthController::class, 'login']);
     
     // Tours
     Route::prefix("tours")->group(function () {
+        Route::get("/", [TourController::class,'get']);
         Route::post("/add", [TourController::class,'create']);
     });
     
@@ -55,7 +56,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/update", [FeatureController::class,'update']);
         Route::post("/delete", [FeatureController::class,'delete']);
     });
-
+    
     // Reasons
     Route::prefix("reasons")->group(function () {
         Route::get("/", [ReasonController::class,'get']);
@@ -63,4 +64,4 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/update", [ReasonController::class,'update']);
         Route::post("/delete", [ReasonController::class,'delete']);
     });
-// });
+    // });

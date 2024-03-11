@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
+            $table->text('icon_path');
             $table->integer('hotel_id');
         });
     }

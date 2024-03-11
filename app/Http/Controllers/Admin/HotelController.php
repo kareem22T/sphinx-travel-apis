@@ -190,17 +190,17 @@ class HotelController extends Controller
                         
             // add hotel reasons
                 foreach ($request->reasons as $reason) {
-                    $image = $this->saveImg($reason->thumbnail, 'images/uploads/Reasons');
+                    $image = $this->saveImg($reason['thumbnail'], 'images/uploads/Reasons');
             
                     $create_reason = Reason::create([
-                        "icon_path" => '/images/uploads/Features/' . $image,
+                        "icon_path" => '/images/uploads/Reasons/' . $image,
                         "hotel_id" => $create_hotel->id,
                     ]);
                     // Add Descriptions
                     foreach ($reason['descriptions'] as $lang => $description) {
                         $addDescripitonreason = ReasonDescription::create([
                             'description' => $description,
-                            'reason_id' => $create_hotel['id'],
+                            'reason_id' => $create_reason['id'],
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
                     };   
@@ -209,7 +209,7 @@ class HotelController extends Controller
                     foreach ($reason['names'] as $lang => $name) {
                         $addName = ReasonName::create([
                             'name' => $name,
-                            'reason_id' => $create_hotel->id,
+                            'reason_id' => $create_reason->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
                     };   
@@ -416,7 +416,7 @@ class HotelController extends Controller
                 $image = $this->saveImg($reason['thumbnail'], 'images/uploads/Reasons');
         
                 $create_reason = Reason::create([
-                    "icon_path" => '/images/uploads/Features/' . $image,
+                    "icon_path" => '/images/uploads/Reasons/' . $image,
                     "hotel_id" => $hotel->id,
                 ]);
                 // Add Descriptions
@@ -572,7 +572,6 @@ class HotelController extends Controller
         }, "names", "descriptions", "gallery", "addresses", "slogans", "features", "reasons" => function ($q) {
             $q->with("names", "descriptions");
         }])->find($request->id);
-        $hotel->thumbnail = $hotel->gallery[0]->path;
 
         return $hotel;
     }

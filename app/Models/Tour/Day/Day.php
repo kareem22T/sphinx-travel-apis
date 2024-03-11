@@ -24,7 +24,12 @@ class Day extends Model
     }
     public function titles()
     {
-        return $this->hasMany('App\Models\Dya\Title', 'day_id');
+        return $this->hasMany('App\Models\Tour\Day\Title', 'day_id');
+    }
+
+    public function descriptions()
+    {
+        return $this->hasMany('App\Models\Tour\Day\Description', 'day_id');
     }
 
 

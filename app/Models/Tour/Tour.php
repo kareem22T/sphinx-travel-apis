@@ -9,7 +9,7 @@ class Tour extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "depature",
+        "expired_date",
         "duration",
         "min_participant",
         "max_participant"
@@ -55,7 +55,12 @@ class Tour extends Model
 
     public function days()
     {
-        return $this->hasMany('App\Models\Tour\Day', 'tour_id');
+        return $this->hasMany('App\Models\Tour\Day\Day', 'tour_id');
+    }
+
+    public function packages()
+    {
+        return $this->hasMany('App\Models\Tour\Package\Package', 'tour_id');
     }
 
     public function gallery()
