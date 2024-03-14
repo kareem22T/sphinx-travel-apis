@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\HotelController;
 use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\ReasonController;
+use App\Http\Controllers\Admin\ResturantController;
 
 
 
@@ -40,6 +41,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/hotel", [HotelController::class,'hotel']);
         Route::post("/room", [HotelController::class,'room']);
         Route::post("/room/add", [HotelController::class,'createRoom']);
+        Route::post("/room/update", [HotelController::class,'updateRoom']);
         Route::post("/room/delete", [HotelController::class,'deleteRoom']);
     });
     
@@ -47,6 +49,18 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::prefix("tours")->group(function () {
         Route::get("/", [TourController::class,'get']);
         Route::post("/add", [TourController::class,'create']);
+        Route::post("/delete", [TourController::class,'delete']);
+        Route::post("/tour", [TourController::class,'tour']);
+        Route::post("/update", [TourController::class,'update']);
+    });
+
+    // Resturants
+    Route::prefix("resturants")->group(function () {
+        Route::get("/", [ResturantController::class,'get']);
+        Route::post("/add", [ResturantController::class,'create']);
+        Route::post("/delete", [ResturantController::class,'delete']);
+        Route::post("/resturant", [ResturantController::class,'resturant']);
+        Route::post("/update", [ResturantController::class,'update']);
     });
     
     // Features

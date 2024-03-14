@@ -4,6 +4,7 @@ namespace App\Models\Hotel;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Resturant\Resturant;
 
 class Hotel extends Model
 {
@@ -15,6 +16,10 @@ class Hotel extends Model
         "map",
         "check_in",
         "check_out",
+        "address",
+        "address_name",
+        "lat",
+        "lng",
     ] ;
 
     public $table = "hotels";
@@ -58,5 +63,21 @@ class Hotel extends Model
     public function features()
     {
         return $this->belongsToMany('App\Models\Feature', 'hotel_features', 'hotel_id', 'feature_id', 'id', 'id');
+    }
+    public function tours()
+    {
+        return $this->belongsToMany('App\Models\Tour\Tour', 'hotel_tours', 'hotel_id', 'tour_id', 'id', 'id');
+    }
+
+    public function nearestRestaurants($limit = 10, $maxDistance = 10)
+    {
+        $haversine = "(6371 * acos(cos(radians($this->lat)) * cos(radians(lat)) * cos(radians(lng) - radians($this->lng)) + sin(radians($this->lat)) * sin(radians(lat))))";
+
+        return Restaurant::select('*')
+            ->selectRaw("{$haversine} AS distance")
+            ->whereRaw("{$haversine} <= ?", [$maxDistance])
+            ->orderBy('distance', 'asc')
+            ->take($limit)
+            ->get();
     }
 }
