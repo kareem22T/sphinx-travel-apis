@@ -12,6 +12,13 @@ use App\Models\Booking\Request as BookingRequest;
 class BookingController extends Controller
 {
     use DataFormController;
+    
+    public function get(Request $request) {
+        $user = $request->user();
+        $history = $user->bookings()->get(); // Fetch bookings as an array
+        return response()->json($history); // Convert to JSON and return response
+    }
+
     public function create(Request $request) {
         $user = $request->user();
 
