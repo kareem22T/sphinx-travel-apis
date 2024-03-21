@@ -57,4 +57,52 @@ class TourController extends Controller
         },])->get();
         return $tours;
     }
+    public function getTour(Request $request) {
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+
+        $tour = Tour::with(["titles" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "intros" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "gallery", "days" => function ($q) use ($lang) {$q->with(["titles" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "descriptions" => function ($q) use ($lang) {
+        $q->where("language_id", $lang->id);
+        }]);}, "locations" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "transportations" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "includes" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "excludes" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        },
+        "packages" => function ($q) use ($lang) {
+            $q->with(["titles" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "descriptions" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "prices", "points" => function ($q) use ($lang) {
+                $q->with(["titles" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                }, "descriptions" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                }
+            ]);
+            }
+            ]);
+        },])->find($request->id);
+        return $tour;
+    }
 }

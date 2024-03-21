@@ -110,6 +110,7 @@ class HotelController extends Controller
             'check_in' => "required",
             'check_out' => "required",
             'address' => ['required'],
+            'type' => ['required'],
             'lng' => ['required'],
             'lat' => ['required'],
             'addressName' => ['required'],
@@ -123,6 +124,7 @@ class HotelController extends Controller
             "lat.required" => "Please enter hotel address",
             "lng.required" => "Please enter hotel address",
             "addressName.required" => "Please enter hotel address",
+            "type.required" => "Please choose hotel type",
         ]);
 
         if ($validator->fails()) {
@@ -142,9 +144,9 @@ class HotelController extends Controller
         }
         $create_hotel = Hotel::create([ // If Validation Pass so create the hotel
             "phone" => $request->phone,
-            "map" => "map",
             "check_in" => $request->check_in,
             "check_out" => $request->check_out,
+            "type" => $request->type,
             "address" => $request->address,
             "lat" => $request->lat,
             "lng" => $request->lng,
@@ -301,6 +303,7 @@ class HotelController extends Controller
             'check_in' => "required",
             'check_out' => "required",
             'address' => ['required'],
+            'type' => ['required'],
             'lng' => ['required'],
             'lat' => ['required'],
             'addressName' => ['required'],
@@ -314,6 +317,7 @@ class HotelController extends Controller
             "lat.required" => "Please enter hotel address",
             "lng.required" => "Please enter hotel address",
             "addressName.required" => "Please enter hotel address",
+            "type.required" => "Please choose hotel type",
         ]);
 
         if ($validator->fails()) {
@@ -339,6 +343,7 @@ class HotelController extends Controller
         $hotel->address = $request->address;
         $hotel->lat = $request->lat;
         $hotel->lng = $request->lng;
+        $hotel->type = $request->type;
         $hotel->address_name = $request->addressName;
         $hotel->save();
         if ($hotel) :

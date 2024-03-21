@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('hotels', function (Blueprint $table) {
             $table->id();
             $table->string('phone', 100)->nullable()->default('text');
-            $table->text('map');
+            $table->string('type');
             $table->string('check_in', 100);
             $table->string('check_out', 100);
             $table->text('address');

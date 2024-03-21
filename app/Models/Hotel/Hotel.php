@@ -13,7 +13,7 @@ class Hotel extends Model
     protected $fillable = [
         "id",
         "phone",
-        "map",
+        "type",
         "check_in",
         "check_out",
         "address",
@@ -69,11 +69,18 @@ class Hotel extends Model
         return $this->belongsToMany('App\Models\Tour\Tour', 'hotel_tours', 'hotel_id', 'tour_id', 'id', 'id');
     }
 
-    public function nearestRestaurants($limit = 10, $maxDistance = 10)
+    public function nearestRestaurants($limit = 10, $maxDistance = 10, $lang)
     {
         $haversine = "(6371 * acos(cos(radians($this->lat)) * cos(radians(lat)) * cos(radians(lng) - radians($this->lng)) + sin(radians($this->lat)) * sin(radians(lat))))";
 
-        return Restaurant::select('*')
+        return Resturant::select('*')
+            ->with(["titles" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "descriptions"  => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }])
             ->selectRaw("{$haversine} AS distance")
             ->whereRaw("{$haversine} <= ?", [$maxDistance])
             ->orderBy('distance', 'asc')

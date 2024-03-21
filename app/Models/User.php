@@ -19,6 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'picture',
+        'password_reset_code',
+        'password_reset_expired_at',
+        'phone',
+        'join_type',
         'email',
         'password',
     ];
