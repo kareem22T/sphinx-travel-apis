@@ -9,6 +9,12 @@ class BookingController extends Controller
 {
     public function get() {
         $requests = BookingRequest::with("user")->latest()->take(200)->get();
+
+        $edits = $requests;
+        foreach ($edits as $req) {
+            $req->seen = 1;
+            $req->save();
+        }
         return $requests;
     }
     public function getNew() {
