@@ -20,7 +20,7 @@ Route::post('/login', [AuthController::class, 'login']);
     // Currencies
     Route::prefix("requests")->group(function () {
         Route::get("/", [BookingController::class, 'get']);
-        Route::post("/add", [CurrencyController::class, 'add']);
+        Route::get("/new", [BookingController::class, 'getNew']);
         Route::put("/update", [CurrencyController::class, 'update']);
         Route::post("/delete", [CurrencyController::class, 'delete']);
     });

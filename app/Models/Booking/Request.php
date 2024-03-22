@@ -12,7 +12,8 @@ class Request extends Model
     protected $fillable = [
         "booking_details",
         "user_id",
-        "status"
+        "status",
+        "seen"
     ];
 
     protected $table = "requests";

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('booking_details');
             $table->integer('user_id');
             $table->boolean('status')->default(1); // 1 = reviewing, 2 = booked, 3 = completed, 4 = not completed
+            $table->boolean('seen')->default(0); // 1 = reviewing, 2 = booked, 3 = completed, 4 = not completed
             $table->timestamps();
         });
     }

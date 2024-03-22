@@ -11,4 +11,8 @@ class BookingController extends Controller
         $requests = BookingRequest::with("user")->latest()->take(200)->get();
         return $requests;
     }
+    public function getNew() {
+        $requests = BookingRequest::with("user")->where("seen", 0)->latest()->take(200)->get();
+        return $requests;
+    }
 }
