@@ -8,7 +8,7 @@ use App\Models\Booking\Request as BookingRequest;
 class BookingController extends Controller
 {
     public function get() {
-        $requests = BookingRequest::latest()->take(200)->get();
+        $requests = BookingRequest::with("user")->latest()->take(200)->get();
         return $requests;
     }
 }

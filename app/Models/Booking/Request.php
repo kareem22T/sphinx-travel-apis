@@ -16,4 +16,12 @@ class Request extends Model
     ];
 
     protected $table = "requests";
+
+    //Relations 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+
 }
