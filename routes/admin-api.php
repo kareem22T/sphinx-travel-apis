@@ -21,6 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::prefix("requests")->group(function () {
         Route::get("/", [BookingController::class, 'get']);
         Route::get("/new", [BookingController::class, 'getNew']);
+        Route::get("/seen", [BookingController::class, 'seen']);
         Route::put("/update", [CurrencyController::class, 'update']);
         Route::post("/delete", [CurrencyController::class, 'delete']);
     });
