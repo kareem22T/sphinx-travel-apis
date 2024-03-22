@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\ReasonController;
 use App\Http\Controllers\Admin\ResturantController;
+use App\Http\Controllers\Admin\BookingController;
 
 
 
@@ -16,6 +17,13 @@ use App\Http\Controllers\Admin\ResturantController;
 Route::post('/login', [AuthController::class, 'login']);
 
 // Route::middleware(["auth:sanctum,admin"])->group(function () {
+    // Currencies
+    Route::prefix("requests")->group(function () {
+        Route::get("/", [BookingController::class, 'get']);
+        Route::post("/add", [CurrencyController::class, 'add']);
+        Route::put("/update", [CurrencyController::class, 'update']);
+        Route::post("/delete", [CurrencyController::class, 'delete']);
+    });
     // Currencies
     Route::prefix("currencies")->group(function () {
         Route::get("/", [CurrencyController::class, 'get']);
