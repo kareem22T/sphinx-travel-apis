@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Notification; 
 use App\Models\User; 
 use PHPMailer\PHPMailer\Exception;
-use ExpoSDK\ExpoMessage;
-use ExpoSDK\Expo;
 use Illuminate\Support\Facades\Http;
 
 trait PushNotificationTrait
 {
-
-    public function pushNotification($title, $body, $token = null, $user_id = null, $data = null)
+    public function pushNotification($title, $body, $user_id = null, $data = null)
     {
         $CreateNotification = Notification::create([
             "user_id" => $user_id,
@@ -21,18 +18,9 @@ trait PushNotificationTrait
             "body" => $body,
         ]);
 
-        if ($user_id) :
-            $user = User::find($user_id);
-            if ($user) :
-                $user->has_unseened_notifications = true;
-                $user->save();
-            endif;
-        else :
-            User::where('id', '>', 0)->update(['has_unseened_notifications' => true]);
-        endif;
 
-        $serverKey = '';
-        $deviceToken = $token ? $token : "/topics/all_users";
+        $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
+        $deviceToken = $user_id ? ("/topics/user_" . $user_id) : "/topics/all_users";
         
         $response = Http::withHeaders([
                 'Authorization' => 'key=' . $serverKey,
@@ -44,7 +32,7 @@ trait PushNotificationTrait
                     'title' => $title,
                     'body' => $body,
                     'data' => $data,
-                    'icon' => "https://fentecmobility.com/imgs/icon.jpg"
+                    'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
                 ],
             ]);
         

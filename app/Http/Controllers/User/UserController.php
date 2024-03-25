@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\DataFormController;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\PushNotificationTrait;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    use DataFormController;
+    use DataFormController, PushNotificationTrait;
 
     public function register(Request $request)
     {
@@ -124,7 +126,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'emailorphone' => 'required',
-            'password' => 'required|min:8',
+            'password' => 'required',
         ], [
             'emailorphone.required' => 'please enter your email or phone number',
             'password.required' => 'please enter your password',
@@ -173,5 +175,20 @@ class UserController extends Controller
             return $this->jsondata(false, null, 'Login failed', [$validator->errors()->first()], []);
         }
 
+    }
+
+    public function getUserNotifications(Request $request) {
+        $user = $request->user();
+
+        $notifications;
+
+        if ($user)
+            $notifications = Notification::latest()->where(function($q) use ($user) {
+                $q->where("user_id", $user->id)
+                ->orWhere("user_id", null);
+            })
+            ->where("created_at", '>=', $user->created_at)->take(30)->get();
+
+        return $notifications;
     }
 }

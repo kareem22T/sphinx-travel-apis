@@ -18,6 +18,7 @@ Route::get("/get-tour", [TourController::class, "getTour"]);
 Route::get("/get-resturante", [RestaurantController::class, "nearestRestaurants"]);
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
+Route::middleware('auth:sanctum')->post("/get-user-notifications", [UserController::class, "getUserNotifications"]);
 Route::middleware('auth:sanctum')->post("/book", [BookingController::class, "create"]);
 Route::middleware('auth:sanctum')->get("/get-bookings", [BookingController::class, "get"]);
 Route::middleware('auth:sanctum')->post('/get-user', [UserController::class, 'getUser']);
