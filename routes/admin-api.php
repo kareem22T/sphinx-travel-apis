@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\ReasonController;
 use App\Http\Controllers\Admin\ResturantController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\MessangerController;
 
 
 
@@ -24,6 +25,12 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::get("/seen", [BookingController::class, 'seen']);
         Route::post("/approve", [BookingController::class, 'approve']);
         Route::post("/cancel", [BookingController::class, 'cancel']);
+    });
+
+    Route::prefix("chats")->group(function () {
+        Route::post("/send", [MessangerController::class, 'send']);
+        Route::get("/chats", [MessangerController::class, 'getChats']);
+        Route::post("/chat", [MessangerController::class, 'getChat']);
     });
     // Currencies
     Route::prefix("currencies")->group(function () {
