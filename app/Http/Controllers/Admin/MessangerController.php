@@ -18,13 +18,13 @@ class MessangerController extends Controller
         $chats = User::with(["messages" => function($q) {
             $q->latest();
         }])->whereHas("messages")->take(100)->get();
-
-        $chats = $chats->sortBy(function ($chat){
+    
+        $sortedChats = $chats->sortByDesc(function ($chat) {
             $latestMessage = $chat->messages->first(); // Get the latest message from the user
             return $latestMessage ? $latestMessage->created_at : null; // Use created_at of latest message, null if no messages
         });
-    
-        return $chats->values(); // Return the collection as an array (optional)
+        
+        return $sortedChats->values()->all(); // Return the collection as an array
     }
 
     public function send(Request $request) {
