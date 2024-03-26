@@ -55,5 +55,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Booking\Request', 'user_id');
     }
     
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message', 'user_id');
+    }
+    
     
 }

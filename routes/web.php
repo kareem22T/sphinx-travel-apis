@@ -6,6 +6,7 @@ use App\Http\Controllers\User\TourController;
 use App\Http\Controllers\User\RestaurantController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\User\MessangerController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,3 +23,5 @@ Route::middleware('auth:sanctum')->post("/get-user-notifications", [UserControll
 Route::middleware('auth:sanctum')->post("/book", [BookingController::class, "create"]);
 Route::middleware('auth:sanctum')->get("/get-bookings", [BookingController::class, "get"]);
 Route::middleware('auth:sanctum')->post('/get-user', [UserController::class, 'getUser']);
+Route::middleware('auth:sanctum')->post('/send-msg', [MessangerController::class, 'send']);
+Route::middleware('auth:sanctum')->get('/get-user-messages', [MessangerController::class, 'userMesages']);
