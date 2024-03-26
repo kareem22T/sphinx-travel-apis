@@ -16,7 +16,7 @@ class MessangerController extends Controller
     use DataFormController, PushNotificationTrait;
     public function getChats() {
         $chats = User::with(["messages" => function($q) {
-            $q->where("seen", 0)->latest();
+            $q->latest();
         }])->whereHas("messages")->take(100)->get();
 
         $chats = $chats->sortBy(function ($chat){
