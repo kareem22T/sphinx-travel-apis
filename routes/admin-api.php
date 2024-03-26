@@ -23,7 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::get("/new", [BookingController::class, 'getNew']);
         Route::get("/seen", [BookingController::class, 'seen']);
         Route::post("/approve", [BookingController::class, 'approve']);
-        Route::post("/delete", [CurrencyController::class, 'delete']);
+        Route::post("/cancel", [BookingController::class, 'cancel']);
     });
     // Currencies
     Route::prefix("currencies")->group(function () {

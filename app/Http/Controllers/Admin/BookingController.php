@@ -57,4 +57,23 @@ class BookingController extends Controller
 
         return $this->jsondata(true, null, 'Successfuly operation', [], []);
     }
+    public function cancel(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'req_id' => 'required',
+        ], );
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Approve failed', [$validator->errors()->first()], []);
+        }
+
+        $booking = BookingRequest::with("user")->find($request->req_id);
+
+        if ($booking) :
+            $booking->status = 3;
+            $this->pushNotification("Booking Canceled", "Your Booking have not completed unfortunately", $booking->user->id);
+            $booking->save();
+        endif;
+
+        return $this->jsondata(true, null, 'Successfuly operation', [], []);
+    }
 }
