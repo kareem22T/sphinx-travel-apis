@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Booking\Request as BookingRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\DataFormController;
+use App\Traits\PushNotificationTrait;
 
 class BookingController extends Controller
 {
-    use DataFormController;
+    use DataFormController, PushNotificationTrait;
 
     public function get() {
         $requests = BookingRequest::with("user")->latest()->take(200)->get();
@@ -41,13 +42,15 @@ class BookingController extends Controller
             return $this->jsondata(false, null, 'Approve failed', [$validator->errors()->first()], []);
         }
 
-        $booking = BookingRequest::find($request->req_id);
+        $booking = BookingRequest::with("user")->find($request->req_id);
 
         if ($booking) :
             if ($booking->status === 1) {
                 $booking->status = 2;
+                $this->pushNotification("Booking Confirmation", "Your Booking have been confirmed successfuly", $booking->user->id);
             } else if ($booking->status === 2) {
                 $booking->status = 3;
+                $this->pushNotification("Booking Completed", "Your Booking have been completed successfuly", $booking->user->id);
             }
             $booking->save();
         endif;
