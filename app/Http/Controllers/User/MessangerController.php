@@ -42,7 +42,7 @@ class MessangerController extends Controller
         $user = $request->user();
         $messages = [];
         if ($user) {
-            $messages = $user->messages()->latest()->get();
+            $messages = $user->messages()->get();
         }
         return $messages;
     }
