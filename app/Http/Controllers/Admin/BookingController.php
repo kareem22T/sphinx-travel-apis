@@ -69,7 +69,7 @@ class BookingController extends Controller
         $booking = BookingRequest::with("user")->find($request->req_id);
 
         if ($booking) :
-            $booking->status = 3;
+            $booking->status = 4;
             $this->pushNotification("Booking Canceled", "Your Booking have not completed unfortunately", $booking->user->id);
             $booking->save();
         endif;
