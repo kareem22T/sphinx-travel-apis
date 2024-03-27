@@ -31,6 +31,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/send", [MessangerController::class, 'send']);
         Route::get("/chats", [MessangerController::class, 'getChats']);
         Route::post("/chat", [MessangerController::class, 'getChat']);
+        Route::post("/test", [MessangerController::class, 'testPush']);
     });
     // Currencies
     Route::prefix("currencies")->group(function () {
