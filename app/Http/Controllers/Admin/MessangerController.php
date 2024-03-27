@@ -77,6 +77,10 @@ class MessangerController extends Controller
         }
 
         $user = User::with("messages")->find($request->user_id);
+        foreach ($user->messages as $msg) {
+            $msg->seen = 1;
+            $msg->save();
+        }
 
         return $user;
     }
