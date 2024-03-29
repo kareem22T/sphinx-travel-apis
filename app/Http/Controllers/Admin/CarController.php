@@ -483,9 +483,9 @@ class CarController extends Controller
                     $car->features()->attach([$feature['id']]);
                 }   
                         
-            return $this->jsondata(true, null, "Hotel has Edited successfuly", [], []);
+            return $this->jsondata(true, null, "Car has Edited successfuly", [], []);
         else:
-            return $this->jsondata(false, null, 'Create failed', ["Failed to Create hotel"], []);
+            return $this->jsondata(false, null, 'Create failed', ["Failed to Create Car"], []);
         endif;
     }
 
