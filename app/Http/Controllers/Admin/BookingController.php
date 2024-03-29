@@ -51,6 +51,17 @@ class BookingController extends Controller
             } else if ($booking->status === 2) {
                 $booking->status = 3;
                 $this->pushNotification("Booking Completed", "Your Booking have been completed successfuly", $booking->user->id);
+
+                $this->pushNotification("Rate your experience now", "Your Booking have been completed would you want to rate your experince?", $booking->user->id);
+
+                $message = Message::create(
+                    [
+                        "msg" => $booking->booking_details,
+                        "user_id" => $booking->user->id,
+                        "is_user_sender" => false,
+                        "type" => 2,
+                    ]
+                );
             }
             $booking->save();
         endif;
