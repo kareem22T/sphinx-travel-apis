@@ -220,5 +220,50 @@ class CarController extends Controller
         if ($crete_feature)
             return  $this->jsondata(true, null, 'Feature has added successfuly', [], []);
     }
-    
+    public function updateFeature(Request $request) {
+        $languages = Language::latest()->get();
+        $keys = $languages->pluck('key')->all(); // get all Languages key as array
+
+        // validate Hotel Names ---------------------------
+        $missingNames = array_diff($keys, array_keys($request->names ? $request->names : [])); // compare keys with names keys to know whitch is missing
+
+        if (!empty($missingNames)) {  // If is there missing keys so show msg to admin with this language
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Hotel Name in (' . Language::where('key', reset($missingNames))->first()->name . ')'], []);
+        }
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'delete failed', [$validator->errors()->first()], []);
+        }
+
+        $feature = Feature::find($request->id);
+
+        if ($request->icon_path) {
+            $image = $this->saveImg($request->icon_path, 'images/uploads/Features');
+            $feature->icon_path = '/images/uploads/Features/' . $image;
+        }
+        $feature->names()->delete();
+
+        if ($feature) :
+            // Add Names
+            foreach ($request->names as $lang => $name) {
+                $addName = FeatureName::create([
+                    'name' => $name,
+                    'feature_id' => $feature->id,
+                    'language_id' => Language::where('key', $lang)->first()->id,
+                ]);
+            };    
+        endif;
+
+        $feature->save();
+
+        if ($feature)
+            return  $this->jsondata(true, null, 'Feature has updated successfuly', [], []);
+    }
+
 }

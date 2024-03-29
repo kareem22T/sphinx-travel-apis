@@ -79,6 +79,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/add", [CarController::class,'create']);
         Route::get("/features", [CarController::class,'getFeatures']);
         Route::post("/features/add", [CarController::class,'addFeature']);
+        Route::post("/features/update", [CarController::class,'updateFeature']);
         Route::post("/delete", [TourController::class,'delete']);
         Route::post("/tour", [TourController::class,'tour']);
         Route::post("/update", [TourController::class,'update']);
