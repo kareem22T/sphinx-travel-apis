@@ -322,6 +322,8 @@ class CarController extends Controller
     public function update(Request $request) {
         $languages = Language::latest()->get();
         $keys = $languages->pluck('key')->all(); // get all Languages key as array
+        $currencies = Currency::latest()->get();
+        $codes = $currencies->pluck('id')->all(); // get all Languages key as array
 
         // validate Car Titles ---------------------------
         $missingTitles = array_diff($keys, array_keys($request->titles ? $request->titles : [])); // compare keys with titles keys to know whitch is missing
