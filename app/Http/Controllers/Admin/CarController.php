@@ -266,4 +266,22 @@ class CarController extends Controller
             return  $this->jsondata(true, null, 'Feature has updated successfuly', [], []);
     }
 
+    public function deleteFeature(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'delete failed', [$validator->errors()->first()], []);
+        }
+
+        $feature = Feature::find($request->id);
+        $feature->names()->delete();
+        $feature->delete();
+
+        if ($feature)
+            return  $this->jsondata(true, null, 'Feature has deleted successfuly', [], []);
+    }
+
 }
