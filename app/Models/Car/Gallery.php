@@ -5,7 +5,7 @@ namespace App\Models\Car;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Gallary extends Model
+class Gallery extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -21,5 +21,4 @@ class Gallary extends Model
     {
         return $this->belongsTo('App\Models\Car\Car', 'car_id');
     }
-
 }
