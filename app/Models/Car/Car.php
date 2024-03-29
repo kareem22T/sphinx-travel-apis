@@ -23,20 +23,20 @@ class Car extends Model
     
     public function prices()
     {
-        return $this->hasMany('App\Models\Hotel\Car\Price', 'car_id');
+        return $this->hasMany('App\Models\Car\Price', 'car_id');
     }
     
     public function descriptions()
     {
-        return $this->hasMany('App\Models\Hotel\Car\Description', 'car_id');
+        return $this->hasMany('App\Models\Car\Description', 'car_id');
     }
     public function gallery()
     {
-        return $this->hasMany('App\Models\Hotel\Car\Gallery', 'car_id');
+        return $this->hasMany('App\Models\Car\Gallery', 'car_id');
     }
     public function types()
     {
-        return $this->hasMany('App\Models\Hotel\Car\Type', 'car_id');
+        return $this->hasMany('App\Models\Car\Type', 'car_id');
     }
     public function features()
     {
