@@ -53,8 +53,6 @@ class BookingController extends Controller
                 $booking->status = 3;
                 $this->pushNotification("Booking Completed", "Your Booking have been completed successfuly", $booking->user->id);
 
-                $this->pushNotification("Rate your experience now", "Your Booking have been completed would you want to rate your experince?", $booking->user->id);
-
                 $message = Message::create(
                     [
                         "msg" => $booking->booking_details,
@@ -63,6 +61,22 @@ class BookingController extends Controller
                         "type" => 2,
                     ]
                 );
+
+                $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
+                $deviceToken = "/topics/MsgUser_" . $booking->user->id;
+                
+                $response = Http::withHeaders([
+                    'Authorization' => 'key=' . $serverKey,
+                    'Content-Type' => 'application/json',
+                ])
+                ->post('https://fcm.googleapis.com/fcm/send', [
+                    'to' => $deviceToken,
+                    'notification' => [
+                        'title' => "Rate your experience now",
+                        'body' => "Your Booking have been completed would you want to rate your experince",
+                        'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
+                    ],
+                ]);    
             }
             $booking->save();
         endif;
