@@ -472,7 +472,7 @@ class CarController extends Controller
                     $image = $this->saveImg($img, 'images/uploads/Cars/car_' . $car->id);
                     if ($image)
                         $upload_image = Gallery::create([
-                            'path' => '/images/uploads/Cars/car_' . $Car->id . '/' . $image,
+                            'path' => '/images/uploads/Cars/car_' . $car->id . '/' . $image,
                             'car_id' => $car->id,
                         ]);
                 }
