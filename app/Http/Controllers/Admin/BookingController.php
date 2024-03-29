@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Booking\Request as BookingRequest;
+use App\Models\Message;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\DataFormController;
 use App\Traits\PushNotificationTrait;
