@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Models\Car;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Description extends Model
+class CarFeatureName extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "description",
-        "car_id",
+        "name",
+        "feature_id",
         "language_id",
     ];
 
-    protected $table = "car_descriptions";
+    protected $table = "carfeature_names";
     public $timestamps = false;
     
     //Relations 
-    public function car()
+    public function feature()
     {
-        return $this->belongsTo('App\Models\Car\Car', 'car_id');
+        return $this->belongsTo('App\Models\CarFeature', 'feature_id');
     }
 
     public function language()

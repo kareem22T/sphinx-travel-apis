@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('car_titles', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->text('title');
+            $table->integer('car_id');
+            $table->integer('language_id');
         });
     }
 

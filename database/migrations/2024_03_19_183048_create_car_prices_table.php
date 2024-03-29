@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('car_prices', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('price');
+            $table->integer('car_id');
+            $table->integer('currency_id');
         });
     }
 

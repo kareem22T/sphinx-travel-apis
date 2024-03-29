@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ReasonController;
 use App\Http\Controllers\Admin\ResturantController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\MessangerController;
+use App\Http\Controllers\Admin\CarController;
 
 
 
@@ -33,6 +34,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/chat", [MessangerController::class, 'getChat']);
         Route::post("/test", [MessangerController::class, 'testPush']);
     });
+
     // Currencies
     Route::prefix("currencies")->group(function () {
         Route::get("/", [CurrencyController::class, 'get']);
@@ -66,6 +68,16 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::prefix("tours")->group(function () {
         Route::get("/", [TourController::class,'get']);
         Route::post("/add", [TourController::class,'create']);
+        Route::post("/delete", [TourController::class,'delete']);
+        Route::post("/tour", [TourController::class,'tour']);
+        Route::post("/update", [TourController::class,'update']);
+    });
+
+    // Cars
+    Route::prefix("cars")->group(function () {
+        Route::get("/", [CarController::class,'get']);
+        Route::post("/add", [CarController::class,'create']);
+        Route::get("/features", [CarController::class,'getFeatures']);
         Route::post("/delete", [TourController::class,'delete']);
         Route::post("/tour", [TourController::class,'tour']);
         Route::post("/update", [TourController::class,'update']);
