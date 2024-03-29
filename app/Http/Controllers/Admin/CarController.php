@@ -489,4 +489,28 @@ class CarController extends Controller
         endif;
     }
 
+    public function delete(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'delete failed', [$validator->errors()->first()], []);
+        }
+
+        $car = Car::find($request->id);
+        $car->titles()->delete();
+        $car->descriptions()->delete();
+        $car->types()->delete();
+        $car->prices()->delete();
+        $path = 'images/uploads/Cars/car_' . $car->id;
+        if (\File::exists($path)) \File::deleteDirectory($path);
+        $car->gallery()->delete();
+        $car->delete();
+
+        if ($car)
+            return  $this->jsondata(true, null, 'Car has deleted successfuly', [], []);
+    }
+
 }
