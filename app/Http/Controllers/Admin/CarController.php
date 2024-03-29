@@ -304,4 +304,20 @@ class CarController extends Controller
             return  $this->jsondata(true, null, 'Feature has deleted successfuly', [], []);
     }
 
+    
+    public function car(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Show failed', [$validator->errors()->first()], []);
+        }
+
+        $car = Car::with(["titles", "types", "prices", "descriptions", "gallery",  "features"])->find($request->id);
+
+        return $car;
+    }
+
 }
