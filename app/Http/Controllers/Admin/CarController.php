@@ -22,6 +22,24 @@ class CarController extends Controller
 {
     use DataFormController;
     use SavePhotoTrait;
+    public function get() {
+        $lang_id = Language::where("key", "EN")->first() ? Language::where("key", "EN")->first()->id : (Language::first() ? Language::first()->id : '' );
+        
+        if ($lang_id) :
+            $cars = Car::latest()->with(["names", "gallery"])->get();
+            
+            foreach ($cars as $car) {
+                if (isset($car->gallery[0])) {
+                    $car->thumbnail = $car->gallery[0]->path;
+                } else {
+                    $car->thumbnail = null; // or whatever default value you prefer
+                }
+            }
+            return $cars;
+        endif;
+            
+        return [];
+    }
 
     public function create(Request $request) {
         $languages = Language::latest()->get();
@@ -181,7 +199,7 @@ class CarController extends Controller
         $languages = Language::latest()->get();
         $keys = $languages->pluck('key')->all(); // get all Languages key as array
 
-        // validate Hotel Names ---------------------------
+        // validate Car Names ---------------------------
         $missingNames = array_diff($keys, array_keys($request->names ? $request->names : [])); // compare keys with names keys to know whitch is missing
 
         if (!empty($missingNames)) {  // If is there missing keys so show msg to admin with this language
@@ -226,11 +244,11 @@ class CarController extends Controller
         $languages = Language::latest()->get();
         $keys = $languages->pluck('key')->all(); // get all Languages key as array
 
-        // validate Hotel Names ---------------------------
+        // validate Car Names ---------------------------
         $missingNames = array_diff($keys, array_keys($request->names ? $request->names : [])); // compare keys with names keys to know whitch is missing
 
         if (!empty($missingNames)) {  // If is there missing keys so show msg to admin with this language
-            return $this->jsondata(false, null, 'Add failed', ['Please enter Hotel Name in (' . Language::where('key', reset($missingNames))->first()->name . ')'], []);
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Name in (' . Language::where('key', reset($missingNames))->first()->name . ')'], []);
         }
         // ----------------------------------------------------------------------------------------------------------------------
 
