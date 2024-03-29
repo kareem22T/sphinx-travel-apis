@@ -78,13 +78,6 @@ class CarController extends Controller
         }
         // ----------------------------------------------------------------------------------------------------------------------
 
-        if (count($request->features ? $request->features : []) < 5) {
-            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Features"], []);
-        }
-
-        if (count($request->gallery ? $request->gallery : []) < 5) {
-            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 images"], []);
-        }
 
         // then validate each single columns that does not need translation
         $validator = Validator::make($request->all(), [
@@ -104,7 +97,14 @@ class CarController extends Controller
             return $this->jsondata(false, null, 'Create failed', [$validator->errors()->first()], []);
         }
         
-        
+        if (count($request->features ? $request->features : []) < 5) {
+            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Features"], []);
+        }
+
+        if (count($request->gallery ? $request->gallery : []) < 5) {
+            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 images"], []);
+        }
+
         $car = Car::create([
             "address" => $request->address,
             "phone" => $request->phone,
