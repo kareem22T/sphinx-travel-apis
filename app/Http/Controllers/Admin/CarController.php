@@ -26,7 +26,7 @@ class CarController extends Controller
         $lang_id = Language::where("key", "EN")->first() ? Language::where("key", "EN")->first()->id : (Language::first() ? Language::first()->id : '' );
         
         if ($lang_id) :
-            $cars = Car::latest()->with(["names", "gallery"])->get();
+            $cars = Car::latest()->with(["titles", "gallery"])->get();
             
             foreach ($cars as $car) {
                 if (isset($car->gallery[0])) {
