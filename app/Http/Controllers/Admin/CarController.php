@@ -101,8 +101,8 @@ class CarController extends Controller
             return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Features"], []);
         }
 
-        if (count($request->gallery ? $request->gallery : []) < 5) {
-            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 images"], []);
+        if (count($request->gallery ? $request->gallery : []) < 3) {
+            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 3 images"], []);
         }
 
         $car = Car::create([
