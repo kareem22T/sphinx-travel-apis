@@ -319,5 +319,172 @@ class CarController extends Controller
 
         return $car;
     }
+    public function update(Request $request) {
+        $languages = Language::latest()->get();
+        $keys = $languages->pluck('key')->all(); // get all Languages key as array
+
+        // validate Car Titles ---------------------------
+        $missingTitles = array_diff($keys, array_keys($request->titles ? $request->titles : [])); // compare keys with titles keys to know whitch is missing
+
+        if (!empty($missingTitles)) {  // If is there missing keys so show msg to admin with this language
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Title in (' . Language::where('key', reset($missingTitles))->first()->name . ')'], []);
+        }
+        foreach ($request->titles as $key => $value) {
+            if (!$value)
+                return $this->jsondata(false, null, 'Add failed', ['Please enter Car Title in (' . Language::where('key', $key)->first()->name . ')'], []);
+        }    
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        // validate Car Types ---------------------------
+        $missingTypes = array_diff($keys, array_keys($request->types ? $request->types : [])); // compare keys with types keys to know whitch is missing
+
+        if (!empty($missingTypes)) {  // If is there missing keys so show msg to admin with this language
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Type in (' . Language::where('key', reset($missingTypes))->first()->name . ')'], []);
+        }
+        foreach ($request->types as $key => $value) {
+            if (!$value)
+                return $this->jsondata(false, null, 'Add failed', ['Please enter Car Type in (' . Language::where('key', $key)->first()->name . ')'], []);
+        }    
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        // validate Car Descriptions ---------------------------
+        $missingDescriptions = array_diff($keys, array_keys($request->descriptions ? $request->descriptions : [])); // compare keys with descriptions keys to know whitch is missing
+
+        if (!empty($missingDescriptions)) {  // If is there missing keys so show msg to admin with this language
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Description in (' . Language::where('key', reset($missingDescriptions))->first()->name . ')'], []);
+        }
+        foreach ($request->descriptions as $key => $value) {
+            if (!$value)
+                return $this->jsondata(false, null, 'Add failed', ['Please enter Car Description in (' . Language::where('key', $key)->first()->name . ')'], []);
+        }    
+        // ----------------------------------------------------------------------------------------------------------------------
+
+        // validate Car Prices ---------------------------
+        $missingPrices = array_diff($codes, array_keys($request->prices ? $request->prices : [])); // compare keys with description keys to know whitch is missing
+
+        if (!empty($missingPrices)) {  // If is there missing keys so show msg to admin with this language
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Price in (' . Currency::where('id', reset($missingPrices))->first()->names[0]->name . ')'], []);
+        }
+
+        foreach ($request->prices as $key => $value) {
+            if (!$value)
+            return $this->jsondata(false, null, 'Add failed', ['Please enter Car Price in (' . Currency::where('id', $key)->first()->names[0]->name . ')'], []);
+        }
+        // ----------------------------------------------------------------------------------------------------------------------
+
+
+        // then validate each single columns that does not need translation
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required'],
+            'address' => ['required'],
+            'lng' => ['required'],
+            'lat' => ['required'],
+            'addressName' => ['required'],
+        ], [
+            "address.required" => "Please enter Car address",
+            "lat.required" => "Please enter Car address",
+            "lng.required" => "Please enter Car address",
+            "addressName.required" => "Please enter Car address",
+        ]);
+        
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Create failed', [$validator->errors()->first()], []);
+        }
+
+        if (count($request->features ? $request->features : []) < 5) {
+            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 features"], []);
+        }
+
+        if (count($request->oldGallery ? $request->oldGallery : []) + count($request->gallery ? $request->gallery : []) < 3) {
+            return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Images"], []);
+        }
+
+        $car = Car::find($request->id);
+        $car->phone = $request->phone;
+        $car->address = $request->address;
+        $car->lat = $request->lat;
+        $car->lng = $request->lng;
+        $car->address_name = $request->addressName;
+        $car->save();
+        if ($car) :
+            $car->titles()->delete();
+            // Add Titles
+            foreach ($request->titles as $lang => $title) {
+                $addTitle = Title::create([
+                    'title' => $title,
+                    'car_id' => $car->id,
+                    'language_id' => Language::where('key', $lang)->first()->id,
+                ]);
+            };    
+            $car->descriptions()->delete();
+            // Add Descriptions
+            foreach ($request->descriptions as $lang => $description) {
+                $addDescription = Description::create([
+                    'description' => $description,
+                    'car_id' => $car->id,
+                    'language_id' => Language::where('key', $lang)->first()->id,
+                ]);
+            };    
+            $car->types()->delete();
+            // Add Type
+            foreach ($request->types as $lang => $type) {
+                $addType = Type::create([
+                    'type' => $type,
+                    'car_id' => $car->id,
+                    'language_id' => Language::where('key', $lang)->first()->id,
+                ]);
+            };    
+            $car->prices()->delete();
+            // Add Prices
+            foreach ($request->prices as $currency => $prices) {
+                $addPrices = Price::create([
+                    'price' => $prices,
+                    'car_id' => $car->id,
+                    'currency_id' => Currency::where('id', $currency)->first()->id,
+                ]);
+            };      
+
+                
+            $oldGalleryIds = [];
+            if ($request->oldGallery)
+            foreach ($request->oldGallery as $img) {
+                $oldGalleryIds[] = $img['id'];
+            }
+
+            // Fetch Gallery where car_id is 3 and id is not in the old gallery IDs
+            $removedGallery = Gallery::where('car_id', $request->id)
+            ->whereNotIn('id', $oldGalleryIds)
+            ->get();
+
+            // Remove images from the filesystem for the new gallery
+            foreach ($removedGallery as $image) {
+                if (file_exists(public_path($image->path))) {
+                    unlink(public_path($image->path));
+                }
+                $image->delete();
+            }
+
+            if ($request->gallery)
+            // Add Gallaray images
+                foreach ($request->gallery as $img) {
+                    $image = $this->saveImg($img, 'images/uploads/Cars/car_' . $car->id);
+                    if ($image)
+                        $upload_image = Gallery::create([
+                            'path' => '/images/uploads/Cars/car_' . $Car->id . '/' . $image,
+                            'car_id' => $car->id,
+                        ]);
+                }
+
+            $car->features()->detach();
+            // add car features
+                foreach ($request->features as $feature) {
+                    $car->features()->attach([$feature['id']]);
+                }   
+                        
+            return $this->jsondata(true, null, "Hotel has Edited successfuly", [], []);
+        else:
+            return $this->jsondata(false, null, 'Create failed', ["Failed to Create hotel"], []);
+        endif;
+    }
 
 }
