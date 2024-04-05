@@ -28,7 +28,7 @@ class RateController extends Controller
 
         $rate = Tour_rating::find($request->id);
         if ($rate) :
-            $rate->approve = 1;
+            $rate->approved = 1;
             $rate->save();
         endif;
 
@@ -47,7 +47,7 @@ class RateController extends Controller
         $rate = Tour_rating::find($request->id);
         if ($rate) :
             $rate->describe = null;
-            $rate->approve = 1;
+            $rate->approved = 1;
             $rate->save();
         endif;
 
