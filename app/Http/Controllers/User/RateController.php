@@ -44,7 +44,8 @@ class RateController extends Controller
 
             if ($rate) {
                 $msg = Message::find($request->msg_id);
-                $msg->delete();
+                if ($msg)
+                    $msg->delete();
 
                 $this->pushNotification("Rating Completed", "Your Rating have submited successfully, thanks for rating", $user->id);
 
