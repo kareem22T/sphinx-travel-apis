@@ -49,7 +49,7 @@ class Hotel extends Model
     {
         return $this->hasMany('App\Models\Hotel\Gallery', 'hotel_id');
     }
-    
+
     public function rooms()
     {
         return $this->hasMany('App\Models\Hotel\Rooms\Room', 'hotel_id');
@@ -86,5 +86,15 @@ class Hotel extends Model
             ->orderBy('distance', 'asc')
             ->take($limit)
             ->get();
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Hotel_rating::class, 'hotel_id');
+    }
+
+    public function averageRating()
+    {
+        return $this->ratings()->selectRaw('AVG(staff) as staff_avg, AVG(facilities) as facilities_avg, AVG(cleanliness) as cleanliness_avg, AVG(comfort) as comfort_avg, AVG(money) as money_avg, AVG(location) as location_avg')->first();
     }
 }
