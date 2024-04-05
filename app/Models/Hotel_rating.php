@@ -19,4 +19,10 @@ class Hotel_rating extends Model
     ];
 
     protected $table = "hotel_rating";
+
+    public function hotel()
+    {
+        return $this->belongsTo('App\Models\Hotel\Hotel', 'hotel_id');
+    }
+
 }
