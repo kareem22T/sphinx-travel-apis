@@ -9,6 +9,7 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\DataFormController;
 use App\Traits\PushNotificationTrait;
+use Illuminate\Support\Facades\Http;
 
 class BookingController extends Controller
 {
@@ -64,7 +65,7 @@ class BookingController extends Controller
 
                 $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
                 $deviceToken = "/topics/MsgUser_" . $booking->user->id;
-                
+
                 $response = Http::withHeaders([
                     'Authorization' => 'key=' . $serverKey,
                     'Content-Type' => 'application/json',
@@ -76,7 +77,7 @@ class BookingController extends Controller
                         'body' => "Your Booking have been completed would you want to rate your experince",
                         'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
                     ],
-                ]);    
+                ]);
             }
             $booking->save();
         endif;
