@@ -80,7 +80,7 @@ class HotelController extends Controller
         // $currency_id = 2;
         $lang = Language::where("key", $request->lang)->first();
         $hotels = Hotel::latest()->where("type", "Cottage")->with([
-            "averageRating",
+            "ratings",
             "names" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
