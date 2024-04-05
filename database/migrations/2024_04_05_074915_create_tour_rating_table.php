@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('rate');
             $table->text('describe')->nullable();
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }
