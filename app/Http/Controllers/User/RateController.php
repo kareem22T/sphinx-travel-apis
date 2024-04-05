@@ -9,6 +9,8 @@ use App\Traits\PushNotificationTrait;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Hotel_rating;
 use App\Models\Message;
+use Illuminate\Support\Facades\Http;
+
 
 class RateController extends Controller
 {
@@ -73,6 +75,9 @@ class RateController extends Controller
                         'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
                     ],
                 ]);
+
+                return $this->jsondata(true, null, 'Rating successfuly', [$validator->errors()->first()], []);
+
             }
         }
     }
