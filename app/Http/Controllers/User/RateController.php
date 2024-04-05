@@ -5,12 +5,14 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\DataFormController;
+use App\Traits\PushNotificationTrait;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Hotel_rating;
 use App\Models\Message;
 
 class RateController extends Controller
 {
+    use PushNotificationTrait, DataFormController;
     public function rateHotel(Request $request) {
         $user = $request->user();
         if ($user) {
