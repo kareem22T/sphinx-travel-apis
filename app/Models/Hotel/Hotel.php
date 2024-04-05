@@ -90,7 +90,7 @@ class Hotel extends Model
 
     public function ratings()
     {
-        return $this->hasMany(Hotel_rating::class, 'hotel_id');
+        return $this->hasMany("App\Models\Hotel_rating", 'hotel_id');
     }
 
     public function averageRating()
