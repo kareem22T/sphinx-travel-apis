@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ResturantController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\MessangerController;
 use App\Http\Controllers\Admin\CarController;
+use App\Http\Controllers\Admin\RateController;
 
 
 
@@ -63,7 +64,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/room/update", [HotelController::class,'updateRoom']);
         Route::post("/room/delete", [HotelController::class,'deleteRoom']);
     });
-    
+
     // Tours
     Route::prefix("tours")->group(function () {
         Route::get("/", [TourController::class,'get']);
@@ -94,7 +95,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/resturant", [ResturantController::class,'resturant']);
         Route::post("/update", [ResturantController::class,'update']);
     });
-    
+
     // Features
     Route::prefix("features")->group(function () {
         Route::get("/", [FeatureController::class,'get']);
@@ -102,12 +103,18 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/update", [FeatureController::class,'update']);
         Route::post("/delete", [FeatureController::class,'delete']);
     });
-    
+
     // Reasons
     Route::prefix("reasons")->group(function () {
         Route::get("/", [ReasonController::class,'get']);
         Route::post("/add", [ReasonController::class,'add']);
         Route::post("/update", [ReasonController::class,'update']);
         Route::post("/delete", [ReasonController::class,'delete']);
+    });
+    // Rating
+    Route::prefix("ratings")->group(function () {
+        Route::get("/", [RateController::class,'getUnApproved']);
+        Route::post("/approve", [ReasonController::class,'Approve']);
+        Route::post("/reject", [ReasonController::class,'Reject']);
     });
     // });

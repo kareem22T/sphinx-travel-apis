@@ -67,6 +67,11 @@ class Tour extends Model
     {
         return $this->hasMany('App\Models\Tour\Gallery', 'tour_id');
     }
-    
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Tour_rating', 'tour_id');
+    }
+
 
 }

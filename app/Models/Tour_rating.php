@@ -14,7 +14,21 @@ class Tour_rating extends Model
         "describe",
         "approved",
         "tour_id",
+        "user_id",
     ];
 
     protected $table = "tour_rating";
+
+    //Relations
+    public function tour()
+    {
+        return $this->belongsTo('App\Models\Tour\Tour', 'tour_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+
 }

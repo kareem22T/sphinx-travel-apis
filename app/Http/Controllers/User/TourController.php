@@ -60,7 +60,9 @@ class TourController extends Controller
     public function getTour(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
-        $tour = Tour::with(["titles" => function ($q) use ($lang) {
+        $tour = Tour::with([
+        "ratings",
+        "titles" => function ($q) use ($lang) {
             if ($lang)
             $q->where("language_id", $lang->id);
         }, "intros" => function ($q) use ($lang) {
