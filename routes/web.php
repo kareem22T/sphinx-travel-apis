@@ -8,6 +8,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\MessangerController;
 use App\Http\Controllers\User\CarController;
+use App\Http\Controllers\User\RateController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,4 +27,5 @@ Route::middleware('auth:sanctum')->post("/book", [BookingController::class, "cre
 Route::middleware('auth:sanctum')->get("/get-bookings", [BookingController::class, "get"]);
 Route::middleware('auth:sanctum')->post('/get-user', [UserController::class, 'getUser']);
 Route::middleware('auth:sanctum')->post('/send-msg', [MessangerController::class, 'send']);
+Route::middleware('auth:sanctum')->post('/rate-hotel', [RateController::class, 'rateHotel']);
 Route::middleware('auth:sanctum')->get('/get-user-messages', [MessangerController::class, 'userMesages']);
