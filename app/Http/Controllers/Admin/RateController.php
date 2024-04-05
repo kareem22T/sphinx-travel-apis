@@ -13,7 +13,7 @@ class RateController extends Controller
     use DataFormController;
 
     public function getUnApproved() {
-        $ratings = Tour_rating::with(["tour", "user"])->where("approved", false)->all();
+        $ratings = Tour_rating::with(["tour", "user"])->where("approved", false)->get();
         return $ratings;
     }
 
