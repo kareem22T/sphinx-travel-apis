@@ -100,6 +100,7 @@ class RateController extends Controller
             $rate = Tour_rating::create([
                 "tour_id" => $request->tour_id,
                 "describe" => $request->describe,
+                "approved" => $request->describe ? false : true,
                 "rate" => (int) $request->rate,
             ]);
 

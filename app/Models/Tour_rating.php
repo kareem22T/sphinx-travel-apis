@@ -12,6 +12,7 @@ class Tour_rating extends Model
     protected $fillable = [
         "rate",
         "describe",
+        "approved",
         "tour_id",
     ];
 
