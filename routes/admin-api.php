@@ -114,7 +114,7 @@ Route::post('/login', [AuthController::class, 'login']);
     // Rating
     Route::prefix("ratings")->group(function () {
         Route::get("/", [RateController::class,'getUnApproved']);
-        Route::post("/approve", [ReasonController::class,'Approve']);
-        Route::post("/reject", [ReasonController::class,'Reject']);
+        Route::post("/approve", [RateController::class,'Approve']);
+        Route::post("/reject", [RateController::class,'Reject']);
     });
     // });
