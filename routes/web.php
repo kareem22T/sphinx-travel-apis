@@ -9,12 +9,14 @@ use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\MessangerController;
 use App\Http\Controllers\User\CarController;
 use App\Http\Controllers\User\RateController;
+use App\Http\Controllers\CurrencyController;
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get("/get-hotels", [HotelController::class, "getHotels"]);
 Route::get("/get-cars", [CarController::class, "getCars"]);
+Route::get("/get-currencies", [CurrencyController::class, "getCurrencies"]);
 Route::get("/get-cottages", [HotelController::class, "getCottages"]);
 Route::get("/get-hotel-restaurent", [HotelController::class, "getHotelNearstRestaurante"]);
 Route::get("/get-tours", [TourController::class, "getTours"]);

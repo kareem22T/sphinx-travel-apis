@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\MessangerController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\RateController;
+use App\Http\Controllers\Admin\SettingsController;
 
 
 
@@ -117,4 +118,9 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/approve", [RateController::class,'Approve']);
         Route::post("/reject", [RateController::class,'Reject']);
     });
-    // });
+    // Edit Home Data
+    Route::prefix("settings")->group(function () {
+        Route::post("/set-home-tours", [SettingsController::class,'setHomeTours']);
+        Route::get("/get-home-tours", [SettingsController::class,'getHomeTours']);
+    });
+// });
