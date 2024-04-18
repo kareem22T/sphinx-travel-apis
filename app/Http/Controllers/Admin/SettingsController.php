@@ -107,7 +107,7 @@ class SettingsController extends Controller
         $data = $request->ad;
         $image = $this->saveImg($request->thumbnail, 'images/uploads/Ad');
 
-        $data->thumbnail_path = '/images/uploads/Ad/' . $image;
+        $data["thumbnail_path"] = '/images/uploads/Ad/' . $image;
 
         $settings = Setting::where("key", "ad") ->first();
 
