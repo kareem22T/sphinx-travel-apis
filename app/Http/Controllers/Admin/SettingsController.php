@@ -91,4 +91,48 @@ class SettingsController extends Controller
                 return $hotels;
         }
     }
+
+    public function setHomeAd(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'ad' => 'required',
+            'thumbnail' => 'required'
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Set Ad failed', [$validator->errors()->first()], []);
+        }
+
+
+        $data = $request->ad;
+        $image = $this->saveImg($request->thumbnail, 'images/uploads/Ad');
+
+        $data->thumbnail_path = '/images/uploads/Ad/' . $image;
+
+        $settings = Setting::where("key", "ad") ->first();
+
+        if ($settings) {
+            $settings->data = json_decode($request->ad);
+            $settings->save();
+        } else {
+            $settings = Setting::create([
+                "key" => "ad",
+                "data" => json_encode($request->ad)
+            ]);
+        }
+
+        if ($settings) {
+            return $this->jsondata(true, null, 'Home Ad setted successfuly', [], []);
+        }
+    }
+
+    public function getHomeAd() {
+        $settings = Setting::where("key", "hotels") ->first();
+
+        if ($settings) {
+            $hotels = Hotel::whereIn('id', json_decode($settings->data))->with(["names", "slogans", "gallery"])->get();
+            if ($hotels)
+                return $hotels;
+        }
+    }
 }

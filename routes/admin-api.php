@@ -124,5 +124,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::get("/get-home-tours", [SettingsController::class,'getHomeTours']);
         Route::post("/set-home-hotels", [SettingsController::class,'setHomeHotels']);
         Route::get("/get-home-hotels", [SettingsController::class,'getHomeHotels']);
+        Route::post("/set-home-ad", [SettingsController::class,'setHomeAd']);
+        Route::get("/get-home-ad", [SettingsController::class,'getHomeAd']);
     });
 // });
