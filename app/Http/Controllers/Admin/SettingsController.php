@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\Tour\Tour;
+use App\Models\Hotel\Hotel;
 use App\Traits\DataFormController;
 use App\Traits\SavePhotoTrait;
 use Illuminate\Support\Facades\Validator;
