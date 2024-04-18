@@ -122,5 +122,7 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::prefix("settings")->group(function () {
         Route::post("/set-home-tours", [SettingsController::class,'setHomeTours']);
         Route::get("/get-home-tours", [SettingsController::class,'getHomeTours']);
+        Route::post("/set-home-hotels", [SettingsController::class,'setHomeHotels']);
+        Route::get("/get-home-hotels", [SettingsController::class,'getHomeHotels']);
     });
 // });

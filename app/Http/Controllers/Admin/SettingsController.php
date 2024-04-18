@@ -52,4 +52,42 @@ class SettingsController extends Controller
                 return $tours;
         }
     }
+
+    public function setHomeHotels(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'hotels' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Set Hotels failed', [$validator->errors()->first()], []);
+        }
+
+
+        $settings = Setting::where("key", "hotels") ->first();
+
+        if ($settings) {
+            $settings->data = json_decode($request->hotels);
+            $settings->save();
+        } else {
+            $settings = Setting::create([
+                "key" => "hotels",
+                "data" => json_encode($request->hotels)
+            ]);
+        }
+
+        if ($settings) {
+            return $this->jsondata(true, null, 'Home Hotel setted successfuly', [], []);
+        }
+    }
+
+    public function getHomeHotels() {
+        $settings = Setting::where("key", "hotels") ->first();
+
+        if ($settings) {
+            $hotels = Hotel::whereIn('id', json_decode($settings->data))->with(["names", "slogans", "gallery"])->get();
+            if ($hotels)
+                return $hotels;
+        }
+    }
 }
