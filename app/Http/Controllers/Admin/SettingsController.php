@@ -47,7 +47,7 @@ class SettingsController extends Controller
         $settings = Setting::where("key", "tours") ->first();
 
         if ($settings) {
-            $tours = Tour::whereIn('id', json_decode($settings->data))->with(["names", "gallery"])->get();
+            $tours = Tour::whereIn('id', json_decode($settings->data))->with(["titles", "gallery"])->get();
             if ($tours)
                 return $tours;
         }
