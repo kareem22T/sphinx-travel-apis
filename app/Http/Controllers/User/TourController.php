@@ -110,10 +110,10 @@ class TourController extends Controller
     }
     public function getHomeTours(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
-        return $settings = Setting::where("key", "tours") ->first();
+        $settings = Setting::where("key", "tours") ->first();
         $tour = [];
 
-        if ($settings) {
+        if ($settings !== null) {
             $tour = Tour::whereIn('id', json_decode($settings->data))->with([
             "ratings",
             "titles" => function ($q) use ($lang) {
@@ -160,7 +160,7 @@ class TourController extends Controller
                 ]);
             },])->find($request->id);
 
-        return $tour;
+            return $tour;
         }
     }
 }
