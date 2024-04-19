@@ -110,7 +110,7 @@ class TourController extends Controller
     }
     public function getHomeTours(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
-        $settings = Setting::where("key", "tours") ->first();
+        return $settings = Setting::where("key", "tours") ->first();
         $tour = [];
 
         if ($settings) {
