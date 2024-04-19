@@ -127,7 +127,9 @@ class SettingsController extends Controller
     }
 
     public function getHomeAd() {
-        $settings = Setting::where("key", "ad") ->first();
-        return $settings;
+        $ad = Setting::where("key", "ad") ->first();
+
+        if ($ad)
+            return json_decode($ad->data);
     }
 }
