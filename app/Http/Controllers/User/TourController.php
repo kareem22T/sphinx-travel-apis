@@ -114,7 +114,7 @@ class TourController extends Controller
         $tour = [];
 
         if ($settings)
-            $tour = Tour::whereIn('id', json_decode($settings->data))->with([
+            $tour = Tour::with([
             "ratings",
             "titles" => function ($q) use ($lang) {
                 if ($lang)
