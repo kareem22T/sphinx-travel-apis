@@ -20,6 +20,7 @@ Route::get("/get-currencies", [CurrencyController::class, "getCurrencies"]);
 Route::get("/get-cottages", [HotelController::class, "getCottages"]);
 Route::get("/get-hotel-restaurent", [HotelController::class, "getHotelNearstRestaurante"]);
 Route::get("/get-tours", [TourController::class, "getTours"]);
+Route::get("/get-home-tours", [TourController::class, "getHomeTours"]);
 Route::get("/get-tour", [TourController::class, "getTour"]);
 Route::get("/get-resturante", [RestaurantController::class, "nearestRestaurants"]);
 Route::post("/register", [UserController::class, "register"]);
