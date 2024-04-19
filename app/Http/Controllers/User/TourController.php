@@ -113,52 +113,54 @@ class TourController extends Controller
         $settings = Setting::where("key", "tours") ->first();
         $tour = [];
 
-        $tour = Tour::whereIn('id', json_decode($settings->data))->with([
-        "ratings",
-        "titles" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "intros" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "gallery", "days" => function ($q) use ($lang) {$q->with(["titles" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "descriptions" => function ($q) use ($lang) {
-        $q->where("language_id", $lang->id);
-        }]);}, "locations" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "transportations" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "includes" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        }, "excludes" => function ($q) use ($lang) {
-            if ($lang)
-            $q->where("language_id", $lang->id);
-        },
-        "packages" => function ($q) use ($lang) {
-            $q->with(["titles" => function ($q) use ($lang) {
+        if ($settings) {
+            $tour = Tour::whereIn('id', json_decode($settings->data))->with([
+            "ratings",
+            "titles" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "intros" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "gallery", "days" => function ($q) use ($lang) {$q->with(["titles" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
             }, "descriptions" => function ($q) use ($lang) {
+            $q->where("language_id", $lang->id);
+            }]);}, "locations" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
-            }, "prices", "points" => function ($q) use ($lang) {
+            }, "transportations" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "includes" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }, "excludes" => function ($q) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            },
+            "packages" => function ($q) use ($lang) {
                 $q->with(["titles" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
                 }, "descriptions" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
+                }, "prices", "points" => function ($q) use ($lang) {
+                    $q->with(["titles" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "descriptions" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }
+                ]);
                 }
-            ]);
-            }
-            ]);
-        },])->find($request->id);
+                ]);
+            },])->get();
 
-        return $tour;
+            return $tour;
+        }
     }
 }
