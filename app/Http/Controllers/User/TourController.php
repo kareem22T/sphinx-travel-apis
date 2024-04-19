@@ -13,7 +13,7 @@ class TourController extends Controller
     public function getTours(Request $request) {
         $lang = Language::where("key", $request->lang)->first();
 
-        $tours = Tour::latest()->with(["titles" => function ($q) use ($lang) {
+        $tours = Tour::latest()->latest()->with(["titles" => function ($q) use ($lang) {
             if ($lang)
             $q->where("language_id", $lang->id);
         }, "intros" => function ($q) use ($lang) {
@@ -114,7 +114,7 @@ class TourController extends Controller
         $tour = [];
 
         if ($settings) {
-            $tour = Tour::whereIn('id', json_decode($settings->data))->with([
+            $tour = Tour::latest()->whereIn('id', json_decode($settings->data))->with([
             "ratings",
             "titles" => function ($q) use ($lang) {
                 if ($lang)

@@ -143,6 +143,78 @@ class HotelController extends Controller
         , 200);
     }
 
+    public function getHomeHotels(Request $request) {
+        // $currency_id = 2;
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+        $settings = Setting::where("key", "hotels") ->first();
+        $hotels = [];
+
+
+        if ($settings)
+            $hotels = Hotel::whereIn('id', json_decode($settings->data))->latest()->where("type", "Cottage")->with([
+                "ratings",
+                "names" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "descriptions"=> function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "addresses" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "rooms" => function ($q) use ($lang) {
+                    $q->with(["features" => function ($q) use ($lang) {
+                        $q->with(["names" => function ($qe) use ($lang) {
+                            if ($lang)
+                            $qe->where("language_id", $lang->id);
+                        }]);
+                    }, "names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "descriptions" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "prices"]);
+                },
+                "slogans" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "gallery",
+                "features" => function ($q) use ($lang) {
+                    $q->with(["names" => function ($qe) use ($lang) {
+                        if ($lang)
+                        $qe->where("language_id", $lang->id);
+                    }]);
+                },
+                "reasons" => function ($q) use ($lang) {
+                    $q->with(["names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "descriptions" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }]);
+                },
+                "tours" => function($q) use ($lang) {
+                    $q->with(["titles" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "intros" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "gallery"]);
+                }
+            ])->get();
+
+        return response()->json(
+            $hotels
+        , 200);
+    }
+
     public function getHotelNearstRestaurante(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
@@ -150,4 +222,6 @@ class HotelController extends Controller
 
         return $hotel->nearestRestaurants(10, 10, $lang);
     }
+
+
 }
