@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tour\Tour;
 use App\Models\Language;
+use App\Models\Setting;
 
 class TourController extends Controller
 {
