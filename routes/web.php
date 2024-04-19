@@ -9,6 +9,7 @@ use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\MessangerController;
 use App\Http\Controllers\User\CarController;
 use App\Http\Controllers\User\RateController;
+use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\CurrencyController;
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +17,7 @@ Route::get('/', function () {
 
 Route::get("/get-hotels", [HotelController::class, "getHotels"]);
 Route::get("/get-home-hotels", [HotelController::class, "getHomeHotels"]);
+Route::get("/get-home-ad", [SettingsController::class, "getHomeAd"]);
 Route::get("/get-cars", [CarController::class, "getCars"]);
 Route::get("/get-currencies", [CurrencyController::class, "getCurrencies"]);
 Route::get("/get-cottages", [HotelController::class, "getCottages"]);
