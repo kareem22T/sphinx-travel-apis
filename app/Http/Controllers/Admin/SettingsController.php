@@ -112,7 +112,7 @@ class SettingsController extends Controller
         $settings = Setting::where("key", "ad") ->first();
 
         if ($settings) {
-            $settings->data = json_decode($data);
+            $settings->data = json_encode($data);
             $settings->save();
         } else {
             $settings = Setting::create([
