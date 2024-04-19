@@ -152,7 +152,7 @@ class HotelController extends Controller
 
 
         if ($settings)
-            $hotels = Hotel::whereIn('id', json_decode($settings->data))->latest()->with([
+            $hotels = Hotel::whereIn('id', json_decode($settings->data))->with([
                 "ratings",
                 "names" => function ($q) use ($lang) {
                     if ($lang)
