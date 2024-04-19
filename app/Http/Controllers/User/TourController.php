@@ -113,8 +113,8 @@ class TourController extends Controller
         $settings = Setting::where("key", "tours") ->first();
         $tour = [];
 
-        if ($settings)
-            $tour = Tour::with([
+        if ($settings) {
+            $tour = Tour::whereIn('id', json_decode($settings->data))->with([
             "ratings",
             "titles" => function ($q) use ($lang) {
                 if ($lang)
@@ -161,5 +161,6 @@ class TourController extends Controller
             },])->find($request->id);
 
         return $tour;
+        }
     }
 }
