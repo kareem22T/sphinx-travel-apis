@@ -30,7 +30,7 @@ class SettingsController extends Controller
         $settings = Setting::where("key", "tours") ->first();
 
         if ($settings) {
-            $settings->data = json_decode($request->tours);
+            $settings->data = json_encode($request->tours);
             $settings->save();
         } else {
             $settings = Setting::create([
@@ -68,7 +68,7 @@ class SettingsController extends Controller
         $settings = Setting::where("key", "hotels") ->first();
 
         if ($settings) {
-            $settings->data = json_decode($request->hotels);
+            $settings->data = json_encode($request->hotels);
             $settings->save();
         } else {
             $settings = Setting::create([
