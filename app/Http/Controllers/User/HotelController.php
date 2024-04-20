@@ -93,10 +93,64 @@ class HotelController extends Controller
             if ($lang)
             $q->where("language_id", $lang->id);
         }, "prices", "hotel" => function ($q) use ($lang) {
-            $q->with(["rooms", "names" => function ($qe) use ($lang) {
-                if ($lang)
-                $qe->where("language_id", $lang->id);
-            }]);
+            $q->with([
+                "ratings",
+                "names" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "descriptions"=> function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "addresses" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "rooms" => function ($q) use ($lang) {
+                    $q->with(["features" => function ($q) use ($lang) {
+                        $q->with(["names" => function ($qe) use ($lang) {
+                            if ($lang)
+                            $qe->where("language_id", $lang->id);
+                        }]);
+                    }, "gallery", "names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    },"descriptions" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "prices"]);
+                },
+                "slogans" => function ($q) use ($lang) {
+                    if ($lang)
+                    $q->where("language_id", $lang->id);
+                },
+                "gallery",
+                "features" => function ($q) use ($lang) {
+                    $q->with(["names" => function ($qe) use ($lang) {
+                        if ($lang)
+                        $qe->where("language_id", $lang->id);
+                    }]);
+                },
+                "reasons" => function ($q) use ($lang) {
+                    $q->with(["names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "descriptions" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }]);
+                },
+                "tours" => function($q) use ($lang) {
+                    $q->with(["titles" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "intros" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "gallery"]);
+                }
+            ]);
         }])->take(15)->get();
 
         return response()->json(
