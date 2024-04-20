@@ -92,12 +92,12 @@ class HotelController extends Controller
         },"descriptions" => function ($q) use ($lang) {
             if ($lang)
             $q->where("language_id", $lang->id);
-        }, "prices", "hotel" => function ($q) {
+        }, "prices", "hotel" => function ($q) use ($lang) {
             $q->with(["names" => function ($qe) use ($lang) {
                 if ($lang)
                 $qe->where("language_id", $lang->id);
             }]);
-        }])->take(15);
+        }])->take(15)->get();
 
         return response()->json(
             $hotels
