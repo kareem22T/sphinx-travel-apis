@@ -20,6 +20,14 @@ class Hotel extends Model
         "address_name",
         "lat",
         "lng",
+        "avg_rating",
+        "num_of_ratings",
+        "avg_staff_rating",
+        "avg_facilities_rating",
+        "avg_cleanliness_rating",
+        "avg_comfort_rating",
+        "avg_money_rating",
+        "avg_location_rating",
     ] ;
 
     public $table = "hotels";
