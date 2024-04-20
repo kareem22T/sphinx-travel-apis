@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get("/get-home-rooms", [HotelController::class, "getRomms"]);
 Route::get("/get-hotels", [HotelController::class, "getHotels"]);
 Route::get("/get-home-hotels", [HotelController::class, "getHomeHotels"]);
 Route::get("/get-home-ad", [SettingsController::class, "getHomeAd"]);

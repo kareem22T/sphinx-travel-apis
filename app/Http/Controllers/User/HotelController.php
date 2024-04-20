@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Hotel\Hotel;
+use App\Models\Hotel\Rooms\Room;
 use App\Models\Language;
 use App\Models\Setting;
 
@@ -71,6 +72,32 @@ class HotelController extends Controller
                 }, "gallery"]);
             }
         ])->get();
+
+        return response()->json(
+            $hotels
+        , 200);
+    }
+
+    public function getRomms(Request $request) {
+        // $currency_id = 2;
+        $lang = Language::where("key", $request->lang)->first();
+        $hotels = Room::latest()->with(["features" => function ($q) use ($lang) {
+            $q->with(["names" => function ($qe) use ($lang) {
+                if ($lang)
+                $q->where("language_id", $lang->id);
+            }]);
+        }, "gallery", "names" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        },"descriptions" => function ($q) use ($lang) {
+            if ($lang)
+            $q->where("language_id", $lang->id);
+        }, "prices", "hotel" => function ($q) {
+            $q->with(["names" => function ($qe) use ($lang) {
+                if ($lang)
+                $qe->where("language_id", $lang->id);
+            }]);
+        }])->take(15);
 
         return response()->json(
             $hotels
