@@ -93,7 +93,7 @@ class HotelController extends Controller
             if ($lang)
             $q->where("language_id", $lang->id);
         }, "prices", "hotel" => function ($q) use ($lang) {
-            $q->with(["names" => function ($qe) use ($lang) {
+            $q->with(["rooms", "names" => function ($qe) use ($lang) {
                 if ($lang)
                 $qe->where("language_id", $lang->id);
             }]);
