@@ -12,6 +12,8 @@ use App\Models\Setting;
 class HotelController extends Controller
 {
     public function getHotels(Request $request) {
+        $sortKey = $request->sort && $request->sort == "HP" ? "lowest_room_price" :"avg_rating";
+        $sortWay = $request->sort && $request->sort == "HP" ? "lowest_room_price" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
         $lang = Language::where("key", $request->lang)->first();
         $hotels = Hotel::with([
@@ -70,7 +72,7 @@ class HotelController extends Controller
                     $q->where("language_id", $lang->id);
                 }, "gallery"]);
             }
-        ])->orderBy('avg_rating', 'desc')->get();
+        ])->orderBy($sortKey, $sortWay)->get();
 
         return response()->json(
             $hotels
