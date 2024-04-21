@@ -681,7 +681,8 @@ class HotelController extends Controller
             return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Images"], []);
         }
 
-        $create_room = Room::find($request->room_id);
+        $create_room = Room::with("hotel")->find($request->room_id);
+        $hotel = Hotel::with("rooms")->find($create_room->hotel ? $create_room->hotel->id : 0);
 
         if ($create_room) :
             // Add Names
@@ -711,6 +712,17 @@ class HotelController extends Controller
                         'currency_id' => Currency::where('id', $currency)->first()->id,
                     ]);
                 };
+                if ($hotel) {
+                    if ($hotel->rooms->count() == 0) {
+                        $hotel->lowest_room_price = $request->prices[Currency::first()->id];
+                        $hotel->save();
+                    } else {
+                        if ((int) $hotel->lowest_room_price > (int) $request->prices[Currency::first()->id]) {
+                            $hotel->lowest_room_price = $request->prices[Currency::first()->id];
+                            $hotel->save();
+                        }
+                    }
+                }
 
                 $create_room->features()->detach();
                 // add Room features

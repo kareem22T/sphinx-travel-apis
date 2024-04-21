@@ -13,7 +13,7 @@ class TourController extends Controller
     public function getTours(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
-        $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
+        $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_package_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
         $tours = Tour::with([
