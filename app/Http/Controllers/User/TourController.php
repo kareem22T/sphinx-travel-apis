@@ -11,7 +11,7 @@ use App\Models\Setting;
 class TourController extends Controller
 {
     public function getTours(Request $request) {
-        $lang = Language::where("key", $request->lang)->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
         $tours = Tour::latest()->latest()->with([
             "ratings" => function($q) {
