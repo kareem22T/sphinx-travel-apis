@@ -111,6 +111,13 @@ class RateController extends Controller
                 return $this->jsondata(false, null, 'Rate failed', [$validator->errors()->first()], []);
             }
 
+            $tour = Tour::find($request->tour_id);
+
+            if ($tour) {
+                $tour->avg_rating = (((int) $tour->avg_rating * (int) $tour->num_of_ratings) + ((int) $request->rate)) / ((int) $tour->num_of_ratings + 1) ;
+                $tour->num_of_ratings = (int) $tour->num_of_ratings + 1 ;
+                $tour->save();
+            }
 
             $rate = Tour_rating::create([
                 "tour_id" => $request->tour_id,

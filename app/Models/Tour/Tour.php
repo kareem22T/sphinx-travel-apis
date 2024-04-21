@@ -12,7 +12,9 @@ class Tour extends Model
         "expired_date",
         "duration",
         "min_participant",
-        "max_participant"
+        "max_participant",
+        "avg_rating",
+        "num_of_ratings",
     ];
 
     public $table = "tours";
