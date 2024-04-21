@@ -186,7 +186,7 @@ class HotelController extends Controller
                 }, "descriptions" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
-                }, "prices"]);
+                }, "prices", "gallery"]);
             },
             "slogans" => function ($q) use ($lang) {
                 if ($lang)
@@ -258,7 +258,7 @@ class HotelController extends Controller
                     }, "descriptions" => function ($q) use ($lang) {
                         if ($lang)
                         $q->where("language_id", $lang->id);
-                    }, "prices"]);
+                    }, "prices", "gallery"]);
                 },
                 "slogans" => function ($q) use ($lang) {
                     if ($lang)
