@@ -32,10 +32,10 @@ class HotelController extends Controller
 
     public function get() {
         $lang_id = Language::where("key", "EN")->first() ? Language::where("key", "EN")->first()->id : (Language::first() ? Language::first()->id : '' );
-        
+
         if ($lang_id) :
             $hotels = Hotel::latest()->with(["names", "gallery"])->get();
-            
+
             foreach ($hotels as $hotel) {
                 if (isset($hotel->gallery[0])) {
                     $hotel->thumbnail = $hotel->gallery[0]->path;
@@ -45,7 +45,7 @@ class HotelController extends Controller
             }
             return $hotels;
         endif;
-            
+
         return [];
     }
 
@@ -62,7 +62,7 @@ class HotelController extends Controller
         foreach ($request->names as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Hotel Name in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Hotel Slogans ---------------------------
@@ -130,7 +130,7 @@ class HotelController extends Controller
         if ($validator->fails()) {
             return $this->jsondata(false, null, 'Create failed', [$validator->errors()->first()], []);
         }
-        
+
         if (count($request->features ? $request->features : []) < 5) {
             return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Features"], []);
         }
@@ -161,7 +161,7 @@ class HotelController extends Controller
                     'hotel_id' => $create_hotel->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
             // Add Slogan
             if ($request->slogans && count($request->slogans) > 0)
                 foreach ($request->slogans as $lang => $slogan) {
@@ -170,7 +170,7 @@ class HotelController extends Controller
                         'hotel_id' => $create_hotel->id,
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };   
+                };
             // Add Descriptions
                 foreach ($request->descriptions as $lang => $description) {
                     $addDescripiton = Description::create([
@@ -178,7 +178,7 @@ class HotelController extends Controller
                         'hotel_id' => $create_hotel->id,
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };   
+                };
             // Add Addresses
                 foreach ($request->addresses as $lang => $address) {
                     $addAddresses = Address::create([
@@ -199,18 +199,18 @@ class HotelController extends Controller
             // add hotel features
                 foreach ($request->features as $feature) {
                     $create_hotel->features()->attach([$feature['id']]);
-                }    
+                }
 
                 if ($request->tours)
                     foreach ($request->tours as $tour) {
                         $create_hotel->tours()->attach([$tour['id']]);
-                    }    
+                    }
 
-                
+
             // add hotel reasons
                 foreach ($request->reasons as $reason) {
                     $image = $this->saveImg($reason['thumbnail'], 'images/uploads/Reasons');
-            
+
                     $create_reason = Reason::create([
                         "icon_path" => '/images/uploads/Reasons/' . $image,
                         "hotel_id" => $create_hotel->id,
@@ -222,8 +222,8 @@ class HotelController extends Controller
                             'reason_id' => $create_reason['id'],
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };   
-            
+                    };
+
                     // Add Descriptions
                     foreach ($reason['names'] as $lang => $name) {
                         $addName = ReasonName::create([
@@ -231,10 +231,10 @@ class HotelController extends Controller
                             'reason_id' => $create_reason->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };   
-            
-                }    
-                        
+                    };
+
+                }
+
             return $this->jsondata(true, null, "Hotel has Added successfuly", [], []);
         else:
             return $this->jsondata(false, null, 'Create failed', ["Failed to Create hotel"], []);
@@ -254,7 +254,7 @@ class HotelController extends Controller
         foreach ($request->names as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Hotel Name in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Hotel Slogans ---------------------------
@@ -355,7 +355,7 @@ class HotelController extends Controller
                     'hotel_id' => $hotel->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             $hotel->slogans()->delete();
             // Add Slogan
@@ -366,8 +366,8 @@ class HotelController extends Controller
                         'hotel_id' => $hotel->id,
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };  
-                
+                };
+
             $hotel->descriptions()->delete();
             // Add Descriptions
                 foreach ($request->descriptions as $lang => $description) {
@@ -376,8 +376,8 @@ class HotelController extends Controller
                         'hotel_id' => $hotel->id,
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };  
-                
+                };
+
             $hotel->addresses()->delete();
             // Add Addresses
                 foreach ($request->addresses as $lang => $address) {
@@ -388,7 +388,7 @@ class HotelController extends Controller
                     ]);
                 };
 
-                
+
             $oldGalleryIds = [];
             if ($request->oldGallery)
             foreach ($request->oldGallery as $img) {
@@ -423,16 +423,16 @@ class HotelController extends Controller
             // add hotel features
             foreach ($request->features as $feature) {
                 $hotel->features()->attach([$feature['id']]);
-            }   
+            }
             if ($request->tours) {
 
                 $hotel->tours()->detach();
                 // add hotel features
                 foreach ($request->tours as $tour) {
                     $hotel->tours()->attach([$tour['id']]);
-                }   
-                
-                
+                }
+
+
             }
 
             $oldReasonsIds = [];
@@ -454,13 +454,13 @@ class HotelController extends Controller
                 $reason->names()->delete();
                 $reason->descriptions()->delete();
                 $reason->delete();
-            }    
-                        
+            }
+
             // add hotel reasons
             if ($request->reasons)
             foreach ($request->reasons as $reason) {
                 $image = $this->saveImg($reason['thumbnail'], 'images/uploads/Reasons');
-        
+
                 $create_reason = Reason::create([
                     "icon_path" => '/images/uploads/Reasons/' . $image,
                     "hotel_id" => $hotel->id,
@@ -472,8 +472,8 @@ class HotelController extends Controller
                         'reason_id' => $create_reason['id'],
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };   
-        
+                };
+
                 // Add Descriptions
                 foreach ($reason['names'] as $lang => $name) {
                     $addName = ReasonName::create([
@@ -481,10 +481,10 @@ class HotelController extends Controller
                         'reason_id' => $create_reason['id'],
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };   
-        
-            }    
-                        
+                };
+
+            }
+
             return $this->jsondata(true, null, "Hotel has Edited successfuly", [], []);
         else:
             return $this->jsondata(false, null, 'Create failed', ["Failed to Create hotel"], []);
@@ -554,7 +554,9 @@ class HotelController extends Controller
         if (count($request->gallery ? $request->gallery : []) < 5) {
             return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 images"], []);
         }
-        
+
+        $hotel = Hotel::with("rooms")->find($request->hotel_id);
+
         $create_room = Room::create([ // If Validation Pass so create the Room
             "hotel_id" => $request->hotel_id,
         ]);
@@ -567,7 +569,7 @@ class HotelController extends Controller
                     'room_id' => $create_room->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
             // Add Descriptions
                 foreach ($request->descriptions as $lang => $description) {
                     $addDescripiton = RoomDescription::create([
@@ -575,7 +577,7 @@ class HotelController extends Controller
                         'room_id' => $create_room->id,
                         'language_id' => Language::where('key', $lang)->first()->id,
                     ]);
-                };   
+                };
             // Add Prices
                 foreach ($request->prices as $currency => $prices) {
                     $addPrices = RoomPrice::create([
@@ -583,11 +585,23 @@ class HotelController extends Controller
                         'room_id' => $create_room->id,
                         'currency_id' => Currency::where('id', $currency)->first()->id,
                     ]);
-                }; 
+                };
+
+            if ($hotel) {
+                if ($hotel->rooms->count() == 0) {
+                    $hotel->lowest_room_price = $request->prices[0][0];
+                    $hotel->save();
+                } else {
+                    if ((int) $hotel->lowest_room_price > (int) $request->prices[0][0]) {
+                        $hotel->lowest_room_price = $request->prices[0][0];
+                        $hotel->save();
+                    }
+                }
+            }
             // add Room features
                 foreach ($request->features as $feature) {
                     $create_room->features()->attach([$feature['id']]);
-                }                  
+                }
             // Add Gallaray images
                 foreach ($request->gallery as $img) {
                     $image = $this->saveImg($img, 'images/uploads/Hotels/hotel_' . $request->hotel_id . '/room_' . $create_room->id);
@@ -668,7 +682,7 @@ class HotelController extends Controller
         }
 
         $create_room = Room::find($request->room_id);
-        
+
         if ($create_room) :
             // Add Names
             $create_room->names()->delete();
@@ -678,7 +692,7 @@ class HotelController extends Controller
                     'room_id' => $create_room->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
             // Add Descriptions
             $create_room->descriptions()->delete();
             foreach ($request->descriptions as $lang => $description) {
@@ -687,7 +701,7 @@ class HotelController extends Controller
                     'room_id' => $create_room->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };   
+            };
             // Add Prices
             $create_room->prices()->delete();
                 foreach ($request->prices as $currency => $prices) {
@@ -696,25 +710,25 @@ class HotelController extends Controller
                         'room_id' => $create_room->id,
                         'currency_id' => Currency::where('id', $currency)->first()->id,
                     ]);
-                }; 
+                };
 
                 $create_room->features()->detach();
                 // add Room features
                 foreach ($request->features as $feature) {
                     $create_room->features()->attach([$feature['id']]);
-                }          
+                }
 
                 $oldGalleryIds = [];
                 if ($request->oldGallery)
                 foreach ($request->oldGallery as $img) {
                     $oldGalleryIds[] = $img['id'];
                 }
-    
+
                 // Fetch Gallery where hotel_id is 3 and id is not in the old gallery IDs
                 $removedGallery = Gallery::where('hotel_id', $request->id)
                 ->whereNotIn('id', $oldGalleryIds)
                 ->get();
-    
+
                 // Remove images from the filesystem for the new gallery
                 foreach ($removedGallery as $image) {
                     if (file_exists(public_path($image->path))) {
@@ -722,7 +736,7 @@ class HotelController extends Controller
                     }
                     $image->delete();
                 }
-    
+
             // Add Gallaray images
             if ($request->gallery)
                 foreach ($request->gallery as $img) {
