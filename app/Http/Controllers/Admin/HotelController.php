@@ -589,11 +589,11 @@ class HotelController extends Controller
 
             if ($hotel) {
                 if ($hotel->rooms->count() == 0) {
-                    $hotel->lowest_room_price = $request->prices[0][0];
+                    $hotel->lowest_room_price = $request->prices[0][Currency::first()->id];
                     $hotel->save();
                 } else {
-                    if ((int) $hotel->lowest_room_price > (int) $request->prices[0][0]) {
-                        $hotel->lowest_room_price = $request->prices[0][0];
+                    if ((int) $hotel->lowest_room_price > (int) $request->prices[0][Currency::first()->id]) {
+                        $hotel->lowest_room_price = $request->prices[0][Currency::first()->id];
                         $hotel->save();
                     }
                 }
