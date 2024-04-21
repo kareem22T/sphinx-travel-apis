@@ -44,7 +44,7 @@ class RateController extends Controller
                 $hotel->avg_staff_rating = (((int) $hotel->staff * (int) $hotel->num_of_ratings) + (int) $request->staff) / ((int) $hotel->num_of_ratings + 1);
                 $hotel->avg_facilities_rating = (((int) $hotel->facilities * (int) $hotel->num_of_ratings) + (int) $request->facilities) / ((int) $hotel->num_of_ratings + 1);
                 $hotel->avg_cleanliness_rating = (((int) $hotel->cleanliness * (int) $hotel->num_of_ratings) + (int) $request->cleanliness) / ((int) $hotel->num_of_ratings + 1);
-                $hotel->avg_comfort_rating = (((int) $hotel->comfort * (int) $hotel->num_of_ratings) + (int) $request->comfort) / ((int) $hotel->num_of_ratings + 1);
+                $hotel->avg_comfort_rating = (((int) $hotel->comfort * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->comfort + 1);
                 $hotel->avg_money_rating = (((int) $hotel->money * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->money + 1);
                 $hotel->avg_location_rating = (((int) $hotel->location * (int) $hotel->num_of_ratings) + (int) $request->location) / ((int) $hotel->location + 1);
                 $hotel->num_of_ratings = (int) $hotel->num_of_ratings + 1 ;
