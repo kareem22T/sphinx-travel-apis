@@ -70,7 +70,7 @@ class HotelController extends Controller
                     $q->where("language_id", $lang->id);
                 }, "gallery"]);
             }
-        ])->get();
+        ])orderBy('avg_rating', 'desc')->get();
 
         return response()->json(
             $hotels
