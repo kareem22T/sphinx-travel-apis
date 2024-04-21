@@ -858,7 +858,7 @@ class TourController extends Controller
                     }
 
             }
-            $tour->lowest_package_price = $request->package[0]->prices[Currency::first()->id];
+            $tour->lowest_package_price = $request->packages[1]['prices'][Currency::first()->id];
             $tour->save();
 
             return $this->jsondata(true, null, "Tour has Added successfuly", [], []);
