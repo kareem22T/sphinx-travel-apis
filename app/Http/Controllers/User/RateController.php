@@ -41,9 +41,9 @@ class RateController extends Controller
 
             if ($hotel) {
                 $hotel->avg_rating = (((int) $hotel->avg_rating * (int) $hotel->num_of_ratings) + (((int) $request->staff + (int) $request->facilities + (int) $request->cleanliness + (int) $request->comfort + (int) $request->location) / 6)) / ((int) $hotel->num_of_ratings + 1) ;
-                $hotel->avg_staff_rating = (((int) $hotel->staff * (int) $hotel->num_of_ratings) + (int) $request->staff) / ((int) $hotel->num_of_ratings + 1);
-                $hotel->avg_facilities_rating = (((int) $hotel->facilities * (int) $hotel->num_of_ratings) + (int) $request->facilities) / ((int) $hotel->num_of_ratings + 1);
-                $hotel->avg_cleanliness_rating = (((int) $hotel->cleanliness * (int) $hotel->num_of_ratings) + (int) $request->cleanliness) / ((int) $hotel->num_of_ratings + 1);
+                $hotel->avg_staff_rating = (((int) $hotel->staff * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->staff + 1);
+                $hotel->avg_facilities_rating = (((int) $hotel->facilities * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->facilities + 1);
+                $hotel->avg_cleanliness_rating = (((int) $hotel->cleanliness * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->cleanliness + 1);
                 $hotel->avg_comfort_rating = (((int) $hotel->comfort * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->comfort + 1);
                 $hotel->avg_money_rating = (((int) $hotel->money * (int) $hotel->num_of_ratings) + (int) $request->money) / ((int) $hotel->money + 1);
                 $hotel->avg_location_rating = (((int) $hotel->location * (int) $hotel->num_of_ratings) + (int) $request->location) / ((int) $hotel->location + 1);
