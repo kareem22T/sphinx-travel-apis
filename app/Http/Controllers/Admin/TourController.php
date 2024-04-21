@@ -34,10 +34,10 @@ class TourController extends Controller
     use SavePhotoTrait;
     public function get() {
         $lang_id = Language::where("key", "EN")->first() ? Language::where("key", "EN")->first()->id : (Language::first() ? Language::first()->id : '' );
-        
+
         if ($lang_id) :
             $tours = Tour::latest()->with(["titles", "gallery"])->get();
-            
+
             foreach ($tours as $tour) {
                 if (isset($tour->gallery[0])) {
                     $tour->thumbnail = $tour->gallery[0]->path;
@@ -47,7 +47,7 @@ class TourController extends Controller
             }
             return $tours;
         endif;
-            
+
         return [];
     }
 
@@ -67,7 +67,7 @@ class TourController extends Controller
         foreach ($request->titles as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Tour Intros ---------------------------
@@ -79,7 +79,7 @@ class TourController extends Controller
         foreach ($request->intros as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Intro in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -92,7 +92,7 @@ class TourController extends Controller
         foreach ($request->locations as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Location in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Tour Transportations ---------------------------
@@ -104,10 +104,10 @@ class TourController extends Controller
         foreach ($request->transportations as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Transportation in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
-        
+
         // then validate each single columns that does not need translation
         $validator = Validator::make($request->all(), [
             'expired_date' => ['required'],
@@ -123,7 +123,7 @@ class TourController extends Controller
             return $this->jsondata(false, null, 'Create failed', [$validator->errors()->first()], []);
         }
 
-        
+
         // validate Tour Includes ---------------------------
         $missingIncludes = array_diff($keys, array_keys($request->includes ? $request->includes : [])); // compare keys with includes keys to know whitch is missing
 
@@ -133,9 +133,9 @@ class TourController extends Controller
         foreach ($request->includes as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Includes in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
-        
+
         // validate Tour Excludes ---------------------------
         $missingExcludes = array_diff($keys, array_keys($request->excludes ? $request->excludes : [])); // compare keys with excludes keys to know whitch is missing
 
@@ -145,7 +145,7 @@ class TourController extends Controller
         foreach ($request->excludes as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Excludes in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         if (count($request->gallery ? $request->gallery : []) < 5) {
@@ -172,7 +172,7 @@ class TourController extends Controller
             foreach ($day['titles'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (!isset($day['descriptions']) ||!$day['descriptions'])
@@ -180,7 +180,7 @@ class TourController extends Controller
 
 
             // validate Day Descriptions ---------------------------
-            $missingDayDescriptions = array_diff($keys, array_keys($day['descriptions'] ? $day['descriptions'] : [])); 
+            $missingDayDescriptions = array_diff($keys, array_keys($day['descriptions'] ? $day['descriptions'] : []));
 
             if (!empty($missingDayDescriptions)) {  // If is there missing keys so show msg to admin with this language
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Description in (' . Language::where('key', reset($missingDayDescriptions))->first()->name . ')'], []);
@@ -188,7 +188,7 @@ class TourController extends Controller
             foreach ($day['descriptions'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
         }
 
@@ -210,7 +210,7 @@ class TourController extends Controller
             foreach ($package['titles'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (!isset($package['descriptions']) ||!$package['descriptions'])
@@ -218,7 +218,7 @@ class TourController extends Controller
 
 
             // validate package Descriptions ---------------------------
-            $missingpackageDescriptions = array_diff($keys, array_keys($package['descriptions'] ? $package['descriptions'] : [])); 
+            $missingpackageDescriptions = array_diff($keys, array_keys($package['descriptions'] ? $package['descriptions'] : []));
 
             if (!empty($missingpackageDescriptions)) {  // If is there missing keys so show msg to admin with this language
                 return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', reset($missingpackageDescriptions))->first()->name . ')'], []);
@@ -226,7 +226,7 @@ class TourController extends Controller
             foreach ($package['descriptions'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (isset($package['features']) && count($package['features']))
@@ -234,15 +234,15 @@ class TourController extends Controller
                 foreach ($package['features'] as $indexF => $feature) {
                     if (!isset($feature['descriptions']) ||!$feature['descriptions'])
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package feature ' . $indexF . " descriptions"], []);
-    
+
                     if (!isset($feature['names']) ||!$feature['names'])
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package feature ' . $indexF . " names"], []);
-    
-    
+
+
                     if (!$value)
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-                }    
-    
+                }
+
             }
 
             if (!isset($package['prices']) ||!$package['prices'])
@@ -263,7 +263,7 @@ class TourController extends Controller
             // ----------------------------------------------------------------------------------------------------------------------
 
         }
-        
+
         $tour = Tour::create([
             "expired_date" => $request->expired_date,
             "duration" => $request->duration,
@@ -279,7 +279,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Intros
             foreach ($request->intros as $lang => $intro) {
@@ -288,7 +288,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Locations
             foreach ($request->locations as $lang => $location) {
@@ -297,7 +297,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Transportations
             foreach ($request->transportations as $lang => $transportation) {
@@ -306,7 +306,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Includes
             foreach ($request->includes as $lang => $include) {
@@ -315,7 +315,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Exclude
             foreach ($request->excludes as $lang => $exclude) {
@@ -324,7 +324,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Gallaray images
             foreach ($request->gallery as $img) {
@@ -335,7 +335,7 @@ class TourController extends Controller
                         'tour_id' => $tour->id,
                     ]);
             }
-            
+
             // add days
             foreach ($request->days as $index => $day) {
                 $image = $this->saveImg($day['thumbnail'], 'images/uploads/Tours/tour_' . $tour->id . '/days/day_' . $index);
@@ -352,7 +352,7 @@ class TourController extends Controller
                             'day_id' => $addDay->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
 
                 //add day descriptions
                     foreach ($day['descriptions'] as $lang => $description) {
@@ -361,9 +361,9 @@ class TourController extends Controller
                             'day_id' => $addDay->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
             }
-            
+
             // add packages
             foreach ($request->packages as $index => $package) {
                 $addpackage = Package::create([
@@ -377,7 +377,7 @@ class TourController extends Controller
                             'package_id' => $addpackage->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
 
                 //add package descriptions
                     foreach ($package['descriptions'] as $lang => $description) {
@@ -387,7 +387,7 @@ class TourController extends Controller
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
                     };
-                    
+
                 // Add Prices
                 foreach ($package['prices'] as $currency => $prices) {
                     $addPrices = PackagePrice::create([
@@ -395,14 +395,15 @@ class TourController extends Controller
                         'package_id' => $addpackage->id,
                         'currency_id' => Currency::where('id', $currency)->first()->id,
                     ]);
-                }; 
+                };
+
 
                 if (isset($package['features']))
                     foreach ($package['features'] as $point) {
                         $addPoint = Point::create([
                             "package_id" => $addpackage->id
                         ]);
-        
+
                         //add Point titles
                             foreach ($point['names'] as $lang => $title) {
                                 $addTitle = PintTitle::create([
@@ -410,8 +411,8 @@ class TourController extends Controller
                                     'point_id' => $addPoint->id,
                                     'language_id' => Language::where('key', $lang)->first()->id,
                                 ]);
-                            };    
-        
+                            };
+
                         //add point descriptions
                             foreach ($point['descriptions'] as $lang => $description) {
                                 $addDescription = PointDescription::create([
@@ -419,10 +420,13 @@ class TourController extends Controller
                                     'point_id' => $addPoint->id,
                                     'language_id' => Language::where('key', $lang)->first()->id,
                                 ]);
-                            };        
+                            };
                     }
 
             }
+            $tour->lowest_package_price = $request->package[0]->prices[Currency::first()->id];
+            $tour->save();
+
             return $this->jsondata(true, null, "Tour has Added successfuly", [], []);
         else:
             return $this->jsondata(false, null, 'Create failed', ["Failed to Create tour"], []);
@@ -449,7 +453,7 @@ class TourController extends Controller
         foreach ($request->titles as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Tour Intros ---------------------------
@@ -461,7 +465,7 @@ class TourController extends Controller
         foreach ($request->intros as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Intro in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -474,7 +478,7 @@ class TourController extends Controller
         foreach ($request->locations as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Location in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
         // validate Tour Transportations ---------------------------
@@ -486,10 +490,10 @@ class TourController extends Controller
         foreach ($request->transportations as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Transportation in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
-        
+
         // then validate each single columns that does not need translation
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
@@ -506,7 +510,7 @@ class TourController extends Controller
             return $this->jsondata(false, null, 'Create failed', [$validator->errors()->first()], []);
         }
 
-        
+
         // validate Tour Includes ---------------------------
         $missingIncludes = array_diff($keys, array_keys($request->includes ? $request->includes : [])); // compare keys with includes keys to know whitch is missing
 
@@ -516,9 +520,9 @@ class TourController extends Controller
         foreach ($request->includes as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Includes in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
-        
+
         // validate Tour Excludes ---------------------------
         $missingExcludes = array_diff($keys, array_keys($request->excludes ? $request->excludes : [])); // compare keys with excludes keys to know whitch is missing
 
@@ -528,14 +532,14 @@ class TourController extends Controller
         foreach ($request->excludes as $key => $value) {
             if (!$value)
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Tour Excludes in (' . Language::where('key', $key)->first()->name . ')'], []);
-        }    
+        }
         // ----------------------------------------------------------------------------------------------------------------------
 
 
         if (count($request->oldGallery ? $request->oldGallery : []) + count($request->gallery ? $request->gallery : []) < 5) {
             return $this->jsondata(false, null, 'Update failed', ["You have to choose at least 5 Images"], []);
         }
-        
+
         if (count($request->days ? $request->days : []) === 0)
             return $this->jsondata(false, null, 'Add failed', ['Please Enter Days data'], []);
 
@@ -554,7 +558,7 @@ class TourController extends Controller
             foreach ($day['titles'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (!isset($day['descriptions']) ||!$day['descriptions'])
@@ -562,7 +566,7 @@ class TourController extends Controller
 
 
             // validate Day Descriptions ---------------------------
-            $missingDayDescriptions = array_diff($keys, array_keys($day['descriptions'] ? $day['descriptions'] : [])); 
+            $missingDayDescriptions = array_diff($keys, array_keys($day['descriptions'] ? $day['descriptions'] : []));
 
             if (!empty($missingDayDescriptions)) {  // If is there missing keys so show msg to admin with this language
                 return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Description in (' . Language::where('key', reset($missingDayDescriptions))->first()->name . ')'], []);
@@ -570,7 +574,7 @@ class TourController extends Controller
             foreach ($day['descriptions'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter Day ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
         }
 
@@ -592,7 +596,7 @@ class TourController extends Controller
             foreach ($package['titles'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Title in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (!isset($package['descriptions']) ||!$package['descriptions'])
@@ -600,7 +604,7 @@ class TourController extends Controller
 
 
             // validate package Descriptions ---------------------------
-            $missingpackageDescriptions = array_diff($keys, array_keys($package['descriptions'] ? $package['descriptions'] : [])); 
+            $missingpackageDescriptions = array_diff($keys, array_keys($package['descriptions'] ? $package['descriptions'] : []));
 
             if (!empty($missingpackageDescriptions)) {  // If is there missing keys so show msg to admin with this language
                 return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', reset($missingpackageDescriptions))->first()->name . ')'], []);
@@ -608,7 +612,7 @@ class TourController extends Controller
             foreach ($package['descriptions'] as $key => $value) {
                 if (!$value)
                     return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-            }    
+            }
             // ----------------------------------------------------------------------------------------------------------------------
 
             if (isset($package['features']) && count($package['features']))
@@ -616,15 +620,15 @@ class TourController extends Controller
                 foreach ($package['features'] as $indexF => $feature) {
                     if (!isset($feature['descriptions']) ||!$feature['descriptions'])
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package feature ' . $indexF . " descriptions"], []);
-    
+
                     if (!isset($feature['names']) ||!$feature['names'])
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package feature ' . $indexF . " names"], []);
-    
-    
+
+
                     if (!$value)
                         return $this->jsondata(false, null, 'Add failed', ['Please enter package ' . $num . ' Description in (' . Language::where('key', $key)->first()->name . ')'], []);
-                }    
-    
+                }
+
             }
 
             if (!isset($package['prices']) ||!$package['prices'])
@@ -645,7 +649,7 @@ class TourController extends Controller
             // ----------------------------------------------------------------------------------------------------------------------
 
         }
-        
+
         $tour = Tour::find($request->id);
             $tour->expired_date = $request->expired_date;
             $tour->duration = $request->duration;
@@ -661,7 +665,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Intros
             $tour->intros()->delete();
@@ -671,7 +675,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Locations
             $tour->locations()->delete();
@@ -681,7 +685,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Transportations
             $tour->transportations()->delete();
@@ -691,7 +695,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Includes
             $tour->includes()->delete();
@@ -701,7 +705,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
 
             // Add Exclude
             $tour->excludes()->delete();
@@ -711,7 +715,7 @@ class TourController extends Controller
                     'tour_id' => $tour->id,
                     'language_id' => Language::where('key', $lang)->first()->id,
                 ]);
-            };    
+            };
             $oldGalleryIds = [];
             if ($request->oldGallery)
             foreach ($request->oldGallery as $img) {
@@ -749,7 +753,7 @@ class TourController extends Controller
                             'tour_id' => $tour->id,
                         ]);
                 }
-            
+
             // add days
             foreach ($tour->days as $day) {
                 $day->titles()->delete();
@@ -772,7 +776,7 @@ class TourController extends Controller
                             'day_id' => $addDay->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
 
                 //add day descriptions
                     foreach ($day['descriptions'] as $lang => $description) {
@@ -781,9 +785,9 @@ class TourController extends Controller
                             'day_id' => $addDay->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
             }
-            
+
             // add packages
             foreach ($tour->packages as $package) {
                 $package->titles()->delete();
@@ -791,7 +795,7 @@ class TourController extends Controller
                 $package->descriptions()->delete();
                 foreach ($package->points() as $package) {
                     $package->titles()->delete();
-                    $package->descriptions()->delete();    
+                    $package->descriptions()->delete();
                 }
                 $package->points()->delete();
             }
@@ -808,7 +812,7 @@ class TourController extends Controller
                             'package_id' => $addpackage->id,
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
-                    };    
+                    };
 
                 //add package descriptions
                     foreach ($package['descriptions'] as $lang => $description) {
@@ -818,7 +822,7 @@ class TourController extends Controller
                             'language_id' => Language::where('key', $lang)->first()->id,
                         ]);
                     };
-                    
+
                 // Add Prices
                 foreach ($package['prices'] as $currency => $prices) {
                     $addPrices = PackagePrice::create([
@@ -826,14 +830,14 @@ class TourController extends Controller
                         'package_id' => $addpackage->id,
                         'currency_id' => Currency::where('id', $currency)->first()->id,
                     ]);
-                }; 
+                };
 
                 if (isset($package['features']))
                     foreach ($package['features'] as $point) {
                         $addPoint = Point::create([
                             "package_id" => $addpackage->id
                         ]);
-        
+
                         //add Point titles
                             foreach ($point['names'] as $lang => $title) {
                                 $addTitle = PintTitle::create([
@@ -841,8 +845,8 @@ class TourController extends Controller
                                     'point_id' => $addPoint->id,
                                     'language_id' => Language::where('key', $lang)->first()->id,
                                 ]);
-                            };    
-        
+                            };
+
                         //add point descriptions
                             foreach ($point['descriptions'] as $lang => $description) {
                                 $addDescription = PointDescription::create([
@@ -850,10 +854,13 @@ class TourController extends Controller
                                     'point_id' => $addPoint->id,
                                     'language_id' => Language::where('key', $lang)->first()->id,
                                 ]);
-                            };        
+                            };
                     }
 
             }
+            $tour->lowest_package_price = $request->package[0]->prices[Currency::first()->id];
+            $tour->save();
+
             return $this->jsondata(true, null, "Tour has Added successfuly", [], []);
         else:
             return $this->jsondata(false, null, 'Create failed', ["Failed to Create tour"], []);
@@ -924,7 +931,7 @@ class TourController extends Controller
             $package->descriptions()->delete();
             foreach ($package->points() as $package) {
                 $package->titles()->delete();
-                $package->descriptions()->delete();    
+                $package->descriptions()->delete();
             }
             $package->points()->delete();
         }
