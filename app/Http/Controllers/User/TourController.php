@@ -13,7 +13,10 @@ class TourController extends Controller
     public function getTours(Request $request) {
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
-        $tours = Tour::latest()->latest()->with([
+        $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
+        $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
+
+        $tours = Tour::with([
             "ratings" => function($q) {
                 $q->with("user")->where("approved", true);
             },
@@ -59,7 +62,7 @@ class TourController extends Controller
             ]);
             }
             ]);
-        },])->get();
+        },])->orderBy($sortKey, $sortWay)->get();
         return $tours;
     }
     public function getTour(Request $request) {
