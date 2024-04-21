@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Hotel_rating;
 use App\Models\Tour_rating;
 use App\Models\Hotel\Hotel;
+use App\Models\Tour\Tour;
 use App\Models\Message;
 use Illuminate\Support\Facades\Http;
 
