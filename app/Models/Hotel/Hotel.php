@@ -28,6 +28,7 @@ class Hotel extends Model
         "avg_comfort_rating",
         "avg_money_rating",
         "avg_location_rating",
+        "lowest_room_price",
     ] ;
 
     public $table = "hotels";
