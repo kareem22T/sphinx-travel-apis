@@ -41,7 +41,7 @@ class RateController extends Controller
 
             if ($hotel) {
                 $normalRate = ((int) $hotel->avg_rating * (int) $hotel->num_of_ratings);
-                $x = (((int) $request->avg_staff_rating + (int) $request->avg_facilities_rating + (int) $request->avg_cleanliness_rating + (int) $request->avg_comfort_rating + (int) $request->avg_money_rating + (int) $request->avg_location_rating) / 6);
+                $x = (((int) $request->staff + (int) $request->facilities + (int) $request->cleanliness + (int) $request->comfort + (int) $request->money + (int) $request->location) / 6);
                 $hotel->avg_rating = ($normalRate + $x) / ((int) $hotel->num_of_ratings + 1) ;
                 $hotel->avg_staff_rating = (((int) $hotel->avg_staff_rating * (int) $hotel->num_of_ratings) + (int) $request->staff) / ((int) $hotel->num_of_ratings + 1);
                 $hotel->avg_facilities_rating = (((int) $hotel->avg_facilities_rating * (int) $hotel->num_of_ratings) + (int) $request->facilities) / ((int) $hotel->num_of_ratings + 1);
