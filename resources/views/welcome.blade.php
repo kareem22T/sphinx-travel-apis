@@ -52,6 +52,7 @@
                 xhr.send(JSON.stringify(formData));
             });
         });
+        window.location.href = 'https://sphinx-travel.com/'
     </script>
 </body>
 </html>
