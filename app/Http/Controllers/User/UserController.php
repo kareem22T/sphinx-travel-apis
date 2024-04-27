@@ -72,12 +72,12 @@ class UserController extends Controller
                     } else {
                         $credentials = ['phone' => $userExistis->email, 'password' => "Google"];
                     }
-            
+
                     if (Auth::attempt($credentials)) {
                         $user = Auth::user();
                         $token = $user->createToken('token')->plainTextToken;
                         return $this->jsonData(true, null, 'Register successfuly', [], ['token' => $token]);
-                    }            
+                    }
                 }
             }
             $validator = Validator::make($request->all(), [
@@ -121,7 +121,7 @@ class UserController extends Controller
         endif;
     }
 
-    
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -159,9 +159,29 @@ class UserController extends Controller
                 $request->user()->save();
             endif;
             return $this->jsonData(true, null, '', [], ['user' => $request->user()]);
-        else :
-            return $this->jsonData(false, null, 'Account Not Found', [], []);
-        endif;
+            else :
+                return $this->jsonData(false, null, 'Account Not Found', [], []);
+            endif;
+    }
+
+    public function updateUser(Request $request)
+    {
+        $user = $request->user();
+
+        if ($request->name) {
+            $user->name = $request->name;
+        }
+        if ($request->phone) {
+            $user->phone = $request->phone;
+        }
+        if ($request->email && $user->join_type == "Google") {
+            $user->phone = $request->phone;
+        }
+        $user->save();
+
+        if ($user)
+            return $this->jsonData(true, null, 'Profile updated successfuly', [], []);
+
     }
 
     public function sendResetEmail(Request $request) {
