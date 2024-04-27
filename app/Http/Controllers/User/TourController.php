@@ -18,7 +18,9 @@ class TourController extends Controller
 
         $tours = Tour::with([
             "ratings" => function($q) {
-                $q->with("user")->select(['name', 'picture', 'join_type'])->where("approved", true);
+                $q->with(["user" => function ($Q) {
+                    $Q->select(['name', 'picture', 'join_type']);
+                }])->where("approved", true);
             },
             "titles" => function ($q) use ($lang) {
             if ($lang)
