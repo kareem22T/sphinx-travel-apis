@@ -864,7 +864,7 @@ class TourController extends Controller
             $tour->lowest_package_price = $request->packages[1]['prices'][Currency::first()->id];
             $tour->save();
 
-            return $this->jsondata(true, null, "Tour has Added successfuly", [], []);
+            return $this->jsondata(true, null, "Tour has updated successfuly", [], []);
         else:
             return $this->jsondata(false, null, 'Create failed', ["Failed to Create tour"], []);
         endif;
