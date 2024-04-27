@@ -38,7 +38,7 @@ class AuthController extends Controller
             $token = $user->createToken('token')->plainTextToken;
             $user->idToken = $user->id;
             $user->refreshToken = $token;
-            $user->expiresIn = 3600;
+            $user->expiresIn = 3600 * 10;
             $user->registered = true;
             return $user;
         }
