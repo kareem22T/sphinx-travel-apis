@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CurrencyController;
+use App\Http\Controllers\Admin\DestinationController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\HotelController;
 use App\Http\Controllers\Admin\TourController;
@@ -43,6 +44,14 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/add", [CurrencyController::class, 'add']);
         Route::put("/update", [CurrencyController::class, 'update']);
         Route::post("/delete", [CurrencyController::class, 'delete']);
+    });
+
+    // Destinations
+    Route::prefix("destinations")->group(function () {
+        Route::get("/", [DestinationController::class, 'get']);
+        Route::post("/add", [DestinationController::class, 'add']);
+        Route::put("/update", [DestinationController::class, 'update']);
+        Route::post("/delete", [DestinationController::class, 'delete']);
     });
 
     // Languages
