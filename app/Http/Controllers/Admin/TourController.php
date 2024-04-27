@@ -656,8 +656,8 @@ class TourController extends Controller
         $tour = Tour::find($request->id);
             $tour->expired_date = $request->expired_date;
             $tour->duration = $request->duration;
-            $tour->min_participant = $request->min_participant;
-            $tour->max_participant = $request->max_participant;
+            $tour->min_participant = $request->min_participant ? $request->min_participant : 0;
+            $tour->max_participant = $request->max_participant ? $request->max_participant : 0;
 
         if ($tour) :
             // Add Titles
