@@ -502,6 +502,7 @@ class TourController extends Controller
             'id' => ['required'],
             'expired_date' => ['required'],
             'duration' => ['required'],
+            'tour_destination' => ['required'],
         ], [
             "expired_date.required" => "Please enter Tour expired_date",
             "duration.required" => "Please enter Tour Duration in days",
