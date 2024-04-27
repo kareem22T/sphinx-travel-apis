@@ -61,8 +61,8 @@ class DestinationController extends Controller
 
 
         $destination = Destination::find($request->id);
-        $destination->code = $request->code;
-        $destination->names()->delete();
+        $destination->name_en = $request->name_en;
+        $destination->name_ar = $request->name_ar;
 
         $destination->save();
 
