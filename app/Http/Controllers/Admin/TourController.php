@@ -658,6 +658,7 @@ class TourController extends Controller
             $tour->duration = $request->duration;
             $tour->min_participant = $request->min_participant ? $request->min_participant : 0;
             $tour->max_participant = $request->max_participant ? $request->max_participant : 0;
+            $tour->destination_id = $request->tour_destination;
 
         if ($tour) :
             // Add Titles
