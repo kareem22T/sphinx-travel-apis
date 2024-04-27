@@ -110,9 +110,11 @@ class TourController extends Controller
 
         // then validate each single columns that does not need translation
         $validator = Validator::make($request->all(), [
+            'tour_destination' => ['required'],
             'expired_date' => ['required'],
             'duration' => ['required'],
         ], [
+            "destination_id.required" => "Please enter Tour destination",
             "expired_date.required" => "Please enter Tour expired_date",
             "duration.required" => "Please enter Tour Duration in days",
             "min_participant.required" => "Please enter Tour Min participants",
@@ -266,6 +268,7 @@ class TourController extends Controller
 
         $tour = Tour::create([
             "expired_date" => $request->expired_date,
+            "destination_id" => $request->tour_destination,
             "duration" => $request->duration,
             "min_participant" => $request->min_participant,
             "max_participant" => $request->max_participant

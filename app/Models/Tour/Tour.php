@@ -15,6 +15,7 @@ class Tour extends Model
         "max_participant",
         "avg_rating",
         "num_of_ratings",
+        "destination_id",
         "lowest_package_price",
     ];
 
