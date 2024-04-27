@@ -113,6 +113,7 @@ class HotelController extends Controller
             'type' => ['required'],
             'lng' => ['required'],
             'lat' => ['required'],
+            'hotel_destination' => ['required'],
             'addressName' => ['required'],
         ], [
             "phone.required" => "Please enter Hotel Customer service Number",
@@ -147,6 +148,7 @@ class HotelController extends Controller
             "check_in" => $request->check_in,
             "check_out" => $request->check_out,
             "type" => $request->type,
+            "destination_id" => $request->hotel_destination,
             "address" => $request->address,
             "lat" => $request->lat,
             "lng" => $request->lng,
@@ -306,6 +308,7 @@ class HotelController extends Controller
             'type' => ['required'],
             'lng' => ['required'],
             'lat' => ['required'],
+            'hotel_destination' => ['required'],
             'addressName' => ['required'],
         ], [
             "phone.required" => "Please enter Hotel Customer service Number",
@@ -340,6 +343,7 @@ class HotelController extends Controller
         $hotel->check_in = $request->check_in;
         $hotel->check_out = $request->check_out;
         $hotel->phone = $request->phone;
+        $hotel->destination_id = $request->hotel_destination;
         $hotel->address = $request->address;
         $hotel->lat = $request->lat;
         $hotel->lng = $request->lng;

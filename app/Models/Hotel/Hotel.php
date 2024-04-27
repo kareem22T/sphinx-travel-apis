@@ -18,6 +18,7 @@ class Hotel extends Model
         "check_out",
         "address",
         "address_name",
+        "destination_id",
         "lat",
         "lng",
         "avg_rating",
