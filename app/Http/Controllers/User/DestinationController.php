@@ -17,7 +17,7 @@ class DestinationController extends Controller
 
         $destinations = Destination::with(
             [
-                'hotel' => function ($q) {
+                'hotels' => function ($q) {
                     $q->with([
                         "names" => function ($q) use ($lang) {
                             if ($lang)
@@ -76,7 +76,7 @@ class DestinationController extends Controller
                         }
                     ])->orderBy($sortKey, $sortWay);
                 }
-                , 'tour'
+                , 'tours'
             ]
         )->get();
         return $destinations;
