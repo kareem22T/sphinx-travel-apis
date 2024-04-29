@@ -76,7 +76,55 @@ class DestinationController extends Controller
                         }
                     ])->orderBy($sortKey, $sortWay);
                 }
-                , 'tours'
+                , 'tours' => function ($q) use ($lang, $sortKey, $sortWay) {
+                    $q->with([
+                        "ratings" => function($q) {
+                            $q->with("user")->where("approved", true);
+                        },
+                        "titles" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "intros" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "gallery", "days" => function ($q) use ($lang) {$q->with(["titles" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "descriptions" => function ($q) use ($lang) {
+                    $q->where("language_id", $lang->id);
+                    }]);}, "locations" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "transportations" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "includes" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }, "excludes" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    },
+                    "packages" => function ($q) use ($lang) {
+                        $q->with(["titles" => function ($q) use ($lang) {
+                            if ($lang)
+                            $q->where("language_id", $lang->id);
+                        }, "descriptions" => function ($q) use ($lang) {
+                            if ($lang)
+                            $q->where("language_id", $lang->id);
+                        }, "prices", "points" => function ($q) use ($lang) {
+                            $q->with(["titles" => function ($q) use ($lang) {
+                                if ($lang)
+                                $q->where("language_id", $lang->id);
+                            }, "descriptions" => function ($q) use ($lang) {
+                                if ($lang)
+                                $q->where("language_id", $lang->id);
+                            }
+                        ]);
+                        }
+                        ]);
+                    },])->orderBy($sortKey, $sortWay);
+                }
             ]
         )->get();
         return $destinations;
