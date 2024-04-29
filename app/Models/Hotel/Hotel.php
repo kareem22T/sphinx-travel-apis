@@ -103,4 +103,9 @@ class Hotel extends Model
         return $this->hasMany('App\Models\Hotel_rating', 'hotel_id');
     }
 
+    public function destination()
+    {
+        return $this->belongsTo('App\Models\Destination', 'destination_id');
+    }
+
 }

@@ -77,5 +77,10 @@ class Tour extends Model
         return $this->hasMany('App\Models\Tour_rating', 'tour_id');
     }
 
+    public function destination()
+    {
+        return $this->belongsTo('App\Models\Destination', 'destination_id');
+    }
+
 
 }
