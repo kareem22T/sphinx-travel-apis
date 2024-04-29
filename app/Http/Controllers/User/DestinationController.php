@@ -17,7 +17,7 @@ class DestinationController extends Controller
 
         $destinations = Destination::with(
             [
-                'hotels' => function ($q) use ($lang) {
+                'hotels' => function ($q) use ($lang, $sortKey, $sortWay) {
                     $q->with([
                         "names" => function ($q) use ($lang) {
                             if ($lang)
