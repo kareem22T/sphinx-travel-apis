@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password_reset_code',
         'password_reset_expired_at',
         'phone',
+        'isPhotoEdited',
         'join_type',
         'email',
         'password',
@@ -54,11 +55,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Booking\Request', 'user_id');
     }
-    
+
     public function messages()
     {
         return $this->hasMany('App\Models\Message', 'user_id');
     }
-    
-    
+
+
 }

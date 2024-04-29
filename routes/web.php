@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->post("/book", [BookingController::class, "cre
 Route::middleware('auth:sanctum')->get("/get-bookings", [BookingController::class, "get"]);
 Route::middleware('auth:sanctum')->post('/get-user', [UserController::class, 'getUser']);
 Route::middleware('auth:sanctum')->post('/update-profile', [UserController::class, 'updateUser']);
+Route::middleware('auth:sanctum')->post('/change-password', [UserController::class, 'changePassword']);
 Route::middleware('auth:sanctum')->post('/send-msg', [MessangerController::class, 'send']);
 Route::middleware('auth:sanctum')->post('/rate-hotel', [RateController::class, 'rateHotel']);
 Route::middleware('auth:sanctum')->post('/rate-tour', [RateController::class, 'rateTour']);

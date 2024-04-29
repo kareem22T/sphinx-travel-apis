@@ -164,6 +164,30 @@ class UserController extends Controller
             endif;
     }
 
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', 'min:8', "confirmed"],
+        ], [
+            'password.required' => 'Please enter a password.',
+            'password.min' => 'Password should be at least 8 characters long.',
+            'password.confirmed' => 'Password should be at least 8 characters long.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Registration failed', [$validator->errors()->first()], []);
+        }
+
+        $user = $request->user();
+        if($user)
+            $user->password = Hash::make($request->password);
+        $user->save();
+
+        if ($user)
+            return $this->jsonData(true, null, 'Password changed successfuly', [], []);
+
+    }
+
     public function updateUser(Request $request)
     {
         $user = $request->user();
@@ -173,6 +197,11 @@ class UserController extends Controller
         }
         if ($request->phone) {
             $user->phone = $request->phone;
+        }
+        if ($request->photo) {
+            $image = $this->saveImg($request->photo, 'images/uploads/UsersProfile');
+            $user->picture = $image;
+            $user->isPhotoEdited = true;
         }
         if ($request->email && $user->join_type == "Google") {
             $user->phone = $request->phone;
