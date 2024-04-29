@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::get("/get-home-rooms", [HotelController::class, "getRomms"]);
 Route::get("/get-hotels", [HotelController::class, "getHotels"]);
-Route::get("/get-destinations", [HotelController::class, "getDestinations"]);
+Route::get("/get-destinations", [DestinationController::class, "getDestinations"]);
 Route::get("/get-home-hotels", [HotelController::class, "getHomeHotels"]);
 Route::get("/get-home-ad", [SettingsController::class, "getHomeAd"]);
 Route::get("/get-cars", [CarController::class, "getCars"]);
