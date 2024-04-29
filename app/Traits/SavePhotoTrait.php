@@ -6,7 +6,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 trait SavePhotoTrait
 {
-   function saveImg($photo, $folder, $name = null)
+   function saveImg($photo, $folder, $name = null, $size = 600)
    {
     $file_extension = $photo->getClientOriginalExtension();
 
@@ -20,7 +20,7 @@ trait SavePhotoTrait
     $path = $folder;
 
     $counter = 1;
-    
+
     // Check if a file with the same name and extension already exists
     if (!$name):
         while (file_exists($path . '/' . $fileName . '.' . $file_extension)) {
@@ -43,9 +43,9 @@ trait SavePhotoTrait
         $image = $manager->read($folder . $fileName);
 
         // resize image proportionally to 300px width
-        $image->scale(width: 600);
+        $image->scale(width: $size);
 
-        // save modified image in new format 
+        // save modified image in new format
         $image->save($folder . $fileName);
 
     } catch (\Throwable $th) {

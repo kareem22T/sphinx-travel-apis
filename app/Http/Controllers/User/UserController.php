@@ -200,7 +200,7 @@ class UserController extends Controller
             $user->phone = $request->phone;
         }
         if ($request->photo) {
-            $image = $this->saveImg($request->photo, 'images/uploads/UsersProfile', "photo_" . $user->id . time());
+            $image = $this->saveImg($request->photo, 'images/uploads/UsersProfile', "photo_" . $user->id . time(), 200);
             $user->picture = "/images/uploads/UsersProfile/" . $image;
             $user->isPhotoEdited = true;
         }
