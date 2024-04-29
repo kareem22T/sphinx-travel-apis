@@ -74,7 +74,7 @@ class DestinationController extends Controller
                                 $q->where("language_id", $lang->id);
                             }, "gallery"]);
                         }
-                    ])->orderBy($sortKey, $sortWay)
+                    ])->orderBy($sortKey, $sortWay);
                 }
                 , 'tour'
             ]
