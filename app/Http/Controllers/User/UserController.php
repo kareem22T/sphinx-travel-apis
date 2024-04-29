@@ -11,10 +11,11 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\PushNotificationTrait;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\SavePhotoTrait;
 
 class UserController extends Controller
 {
-    use DataFormController, PushNotificationTrait;
+    use DataFormController, PushNotificationTrait, SavePhotoTrait;
 
     public function register(Request $request)
     {
