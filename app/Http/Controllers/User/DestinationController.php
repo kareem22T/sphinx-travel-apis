@@ -78,7 +78,7 @@ class DestinationController extends Controller
                 }
                 , 'tour'
             ]
-        )->all();
+        )->get();
         return $destinations;
     }
 }
