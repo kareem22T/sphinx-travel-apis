@@ -9,7 +9,7 @@ use App\Models\Language;
 
 class DestinationController extends Controller
 {
-    public function getDestinations() {
+    public function getDestinations(Request $request) {
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
