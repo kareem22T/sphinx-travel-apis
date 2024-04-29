@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\Destination;
 use App\Traits\DataFormController;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\SavePhotoTrait;
 
 class DestinationController extends Controller
 {
     use DataFormController;
+    use SavePhotoTrait;
 
     public function get() {
         return $Destinations = Destination::latest()->get();
