@@ -200,8 +200,8 @@ class UserController extends Controller
             $user->phone = $request->phone;
         }
         if ($request->photo) {
-            $image = $this->saveImg($request->photo, 'images/uploads/UsersProfile');
-            $user->picture = $image;
+            $image = $this->saveImg($request->photo, 'images/uploads/UsersProfile', "photo_" . $user->id . time());
+            $user->picture = "/images/uploads/UsersProfile/" . $image;
             $user->isPhotoEdited = true;
         }
         if ($request->email && $user->join_type == "Google") {
