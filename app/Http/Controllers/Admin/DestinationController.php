@@ -22,10 +22,12 @@ class DestinationController extends Controller
         $validator = Validator::make($request->all(), [
             'name_en' => 'required',
             'name_ar' => 'required',
+            'thumbnail_path' => 'required',
             // 'name' => 'required',
         ], [
             'name_en.required' => 'please enter destination name in English',
             'name_ar.required' => 'please enter destination name in Arabic',
+            'thumbnail_path.required' => 'please Upload destination thumbnail',
             // 'name.required' => 'please enter destination name',
         ]);
 
@@ -33,9 +35,12 @@ class DestinationController extends Controller
             return $this->jsondata(false, null, 'add failed', [$validator->errors()->first()], []);
         }
 
+        $image = $this->saveImg($request->thumbnail, 'images/uploads/Destination', null, 300);
+
         $crete_destination = Destination::create([
             "name_en" => $request->name_en,
             "name_ar" => $request->name_ar,
+            "thumbnail_path" => '/images/uploads/Destinations/' . $image,
             // "name" => $request->name
         ]);
 
@@ -61,6 +66,14 @@ class DestinationController extends Controller
 
 
         $destination = Destination::find($request->id);
+        if ($request->thumbnail_path) {
+            if (file_exists(public_path($destination->thumbnail_path))) {
+                unlink(public_path($destination->thumbnail_path));
+            }
+            $image = $this->saveImg($request->thumbnail, 'images/uploads/Destination', null, 300);
+            $destination->thumbnail_path = '/images/uploads/Destinations/' . $image;
+        }
+
         $destination->name_en = $request->name_en;
         $destination->name_ar = $request->name_ar;
 
