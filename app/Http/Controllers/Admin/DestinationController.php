@@ -25,11 +25,15 @@ class DestinationController extends Controller
         $validator = Validator::make($request->all(), [
             'name_en' => 'required',
             'name_ar' => 'required',
+            'desc_en' => 'required',
+            'desc_ar' => 'required',
             'thumbnail_path' => 'required',
             // 'name' => 'required',
         ], [
             'name_en.required' => 'please enter destination name in English',
             'name_ar.required' => 'please enter destination name in Arabic',
+            'desc_ar.required' => 'please enter destination description in English',
+            'desc_en.required' => 'please enter destination description in Arabic',
             'thumbnail_path.required' => 'please Upload destination thumbnail',
             // 'name.required' => 'please enter destination name',
         ]);
@@ -43,6 +47,8 @@ class DestinationController extends Controller
         $crete_destination = Destination::create([
             "name_en" => $request->name_en,
             "name_ar" => $request->name_ar,
+            "desc_ar" => $request->desc_ar,
+            "desc_en" => $request->desc_en,
             "thumbnail_path" => '/images/uploads/Destination/' . $image,
             // "name" => $request->name
         ]);
@@ -56,10 +62,16 @@ class DestinationController extends Controller
         $validator = Validator::make($request->all(), [
             'name_en' => 'required',
             'name_ar' => 'required',
+            'desc_en' => 'required',
+            'desc_ar' => 'required',
+            'thumbnail_path' => 'required',
             // 'name' => 'required',
         ], [
             'name_en.required' => 'please enter destination name in English',
             'name_ar.required' => 'please enter destination name in Arabic',
+            'desc_ar.required' => 'please enter destination description in English',
+            'desc_en.required' => 'please enter destination description in Arabic',
+            'thumbnail_path.required' => 'please Upload destination thumbnail',
             // 'name.required' => 'please enter destination name',
         ]);
 
@@ -77,6 +89,8 @@ class DestinationController extends Controller
 
         $destination->name_en = $request->name_en;
         $destination->name_ar = $request->name_ar;
+        $destination->desc_ar = $request->desc_ar;
+        $destination->desc_en = $request->desc_en;
 
         $destination->save();
 

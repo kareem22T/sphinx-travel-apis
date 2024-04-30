@@ -11,6 +11,8 @@ class Destination extends Model
     protected $fillable = [
         "name_ar",
         "name_en",
+        "desc_ar",
+        "desc_en",
         "thumbnail_path",
     ];
 
