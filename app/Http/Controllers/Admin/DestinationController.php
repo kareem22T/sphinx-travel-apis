@@ -64,7 +64,6 @@ class DestinationController extends Controller
             'name_ar' => 'required',
             'desc_en' => 'required',
             'desc_ar' => 'required',
-            'thumbnail_path' => 'required',
             // 'name' => 'required',
         ], [
             'name_en.required' => 'please enter destination name in English',
