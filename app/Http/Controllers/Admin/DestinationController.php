@@ -9,7 +9,8 @@ use App\Models\Destination;
 use App\Traits\DataFormController;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\SavePhotoTrait;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 class DestinationController extends Controller
 {
     use DataFormController;
@@ -69,7 +70,7 @@ class DestinationController extends Controller
 
         $destination = Destination::find($request->id);
         if ($request->thumbnail_path) {
-            Storage::delete($destination->thumbnail_path);
+            File::delete($destination->thumbnail_path);
             $image = $this->saveImg($request->thumbnail_path, 'images/uploads/Destination');
             $destination->thumbnail_path = '/images/uploads/Destination/' . $image;
         }
