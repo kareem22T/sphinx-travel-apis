@@ -69,8 +69,8 @@ class DestinationController extends Controller
 
         $destination = Destination::find($request->id);
         if ($request->thumbnail_path) {
-            if (file_exists(public_path($destination->thumbnail_path))) {
-                unlink(public_path($destination->thumbnail_path));
+            if (is_file($destination->thumbnail_path)) {
+               unlink($destination->thumbnail_path);
             }
             $image = $this->saveImg($request->thumbnail_path, 'images/uploads/Destination', null, 300);
             $destination->thumbnail_path = '/images/uploads/Destinations/' . $image;
