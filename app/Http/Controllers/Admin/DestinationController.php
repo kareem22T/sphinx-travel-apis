@@ -37,7 +37,7 @@ class DestinationController extends Controller
             return $this->jsondata(false, null, 'add failed', [$validator->errors()->first()], []);
         }
 
-        $image = $this->saveImg($request->thumbnail, 'images/uploads/Destination', null, 300);
+        $image = $this->saveImg($request->thumbnail_path, 'images/uploads/Destination', null, 300);
 
         $crete_destination = Destination::create([
             "name_en" => $request->name_en,
@@ -72,7 +72,7 @@ class DestinationController extends Controller
             if (file_exists(public_path($destination->thumbnail_path))) {
                 unlink(public_path($destination->thumbnail_path));
             }
-            $image = $this->saveImg($request->thumbnail, 'images/uploads/Destination', null, 300);
+            $image = $this->saveImg($request->thumbnail_path, 'images/uploads/Destination', null, 300);
             $destination->thumbnail_path = '/images/uploads/Destinations/' . $image;
         }
 
