@@ -50,7 +50,7 @@ Route::post('/login', [AuthController::class, 'login']);
     Route::prefix("destinations")->group(function () {
         Route::get("/", [DestinationController::class, 'get']);
         Route::post("/add", [DestinationController::class, 'add']);
-        Route::put("/update", [DestinationController::class, 'update']);
+        Route::post("/update", [DestinationController::class, 'update']);
         Route::post("/delete", [DestinationController::class, 'delete']);
     });
 
