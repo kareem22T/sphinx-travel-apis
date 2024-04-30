@@ -42,7 +42,7 @@ class DestinationController extends Controller
         $crete_destination = Destination::create([
             "name_en" => $request->name_en,
             "name_ar" => $request->name_ar,
-            "thumbnail_path" => '/images/uploads/Destinations/' . $image,
+            "thumbnail_path" => '/images/uploads/Destination/' . $image,
             // "name" => $request->name
         ]);
 
@@ -70,7 +70,7 @@ class DestinationController extends Controller
         $destination = Destination::find($request->id);
         if ($request->thumbnail_path) {
             $image = $this->saveImg($request->thumbnail_path, 'images/uploads/Destination');
-            $destination->thumbnail_path = '/images/uploads/Destinations/' . $image;
+            $destination->thumbnail_path = '/images/uploads/Destination/' . $image;
             if (is_file($destination->thumbnail_path)) {
                unlink($destination->thumbnail_path);
             }
