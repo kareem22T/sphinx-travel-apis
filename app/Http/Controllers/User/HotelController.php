@@ -237,7 +237,8 @@ class HotelController extends Controller
 
     public function getHomeHotels(Request $request) {
         // $currency_id = 2;
-        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
         $settings = Setting::where("key", "hotels") ->first();
         $hotels = [];
 
@@ -257,7 +258,7 @@ class HotelController extends Controller
                     if ($lang)
                     $q->where("language_id", $lang->id);
                 },
-                "rooms" => function ($q) use ($lang) {
+                "rooms" => function ($q) use ($lang, $currency_id) {
                     $q->with(["features" => function ($q) use ($lang) {
                         $q->with(["names" => function ($qe) use ($lang) {
                             if ($lang)
