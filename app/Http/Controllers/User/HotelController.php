@@ -269,7 +269,14 @@ class HotelController extends Controller
                     }, "descriptions" => function ($q) use ($lang) {
                         if ($lang)
                         $q->where("language_id", $lang->id);
-                    }, "prices", "gallery"]);
+                    }, "prices" => function ($q) use ($lang, $currency_id) {
+                        $q->with(['currency' => function ($Q) use ($lang) {
+                            $Q->with(["names" => function ($q) use ($lang) {
+                                if ($lang)
+                                $q->where("language_id", $lang->id);
+                            }]);
+                        }])->where("currency_id", $currency_id);
+                    }, "gallery"]);
                 },
                 "slogans" => function ($q) use ($lang) {
                     if ($lang)
