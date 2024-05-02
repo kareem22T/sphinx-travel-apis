@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tour\Tour;
 use App\Models\Language;
+use App\Models\Currency;
 use App\Models\Setting;
 
 class TourController extends Controller
 {
     public function getTours(Request $request) {
-        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
 
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_package_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
@@ -44,14 +46,21 @@ class TourController extends Controller
             if ($lang)
             $q->where("language_id", $lang->id);
         },
-        "packages" => function ($q) use ($lang) {
+        "packages" => function ($q) use ($lang, $currency_id) {
             $q->with(["titles" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
             }, "descriptions" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
-            }, "prices", "points" => function ($q) use ($lang) {
+            }, "prices" => function ($q) use ($lang, $currency_id) {
+                $q->with(['currency' => function ($Q) use ($lang) {
+                    $Q->with(["names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }]);
+                }])->where("currency_id", $currency_id);
+            }, "points" => function ($q) use ($lang) {
                 $q->with(["titles" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
@@ -66,7 +75,8 @@ class TourController extends Controller
         return $tours;
     }
     public function getTour(Request $request) {
-        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
 
         $tour = Tour::with([
         "ratings",
@@ -94,14 +104,21 @@ class TourController extends Controller
             if ($lang)
             $q->where("language_id", $lang->id);
         },
-        "packages" => function ($q) use ($lang) {
+        "packages" => function ($q) use ($lang, $currency_id) {
             $q->with(["titles" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
             }, "descriptions" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
-            }, "prices", "points" => function ($q) use ($lang) {
+            }, "prices" => function ($q) use ($lang, $currency_id) {
+                $q->with(['currency' => function ($Q) use ($lang) {
+                    $Q->with(["names" => function ($q) use ($lang) {
+                        if ($lang)
+                        $q->where("language_id", $lang->id);
+                    }]);
+                }])->where("currency_id", $currency_id);
+            }, "points" => function ($q) use ($lang) {
                 $q->with(["titles" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
@@ -116,7 +133,8 @@ class TourController extends Controller
         return $tour;
     }
     public function getHomeTours(Request $request) {
-        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
         $settings = Setting::where("key", "tours") ->first();
         $tour = [];
 
@@ -147,14 +165,21 @@ class TourController extends Controller
                 if ($lang)
                 $q->where("language_id", $lang->id);
             },
-            "packages" => function ($q) use ($lang) {
+            "packages" => function ($q) use ($lang, $currency_id) {
                 $q->with(["titles" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
                 }, "descriptions" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
-                }, "prices", "points" => function ($q) use ($lang) {
+                }, "prices" => function ($q) use ($lang, $currency_id) {
+                    $q->with(['currency' => function ($Q) use ($lang) {
+                        $Q->with(["names" => function ($q) use ($lang) {
+                            if ($lang)
+                            $q->where("language_id", $lang->id);
+                        }]);
+                    }])->where("currency_id", $currency_id);
+                }, "points" => function ($q) use ($lang) {
                     $q->with(["titles" => function ($q) use ($lang) {
                         if ($lang)
                         $q->where("language_id", $lang->id);

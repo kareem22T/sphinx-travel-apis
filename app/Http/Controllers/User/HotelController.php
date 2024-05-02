@@ -170,7 +170,8 @@ class HotelController extends Controller
 
     public function getCottages(Request $request) {
         // $currency_id = 2;
-        $lang = Language::where("key", $request->lang)->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
         $hotels = Hotel::latest()->where("type", "Cottage")->with([
             "ratings",
             "names" => function ($q) use ($lang) {
@@ -185,7 +186,7 @@ class HotelController extends Controller
                 if ($lang)
                 $q->where("language_id", $lang->id);
             },
-            "rooms" => function ($q) use ($lang) {
+            "rooms" => function ($q) use ($lang, $currency_id) {
                 $q->with(["features" => function ($q) use ($lang) {
                     $q->with(["names" => function ($qe) use ($lang) {
                         if ($lang)
@@ -197,7 +198,14 @@ class HotelController extends Controller
                 }, "descriptions" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
-                }, "prices", "gallery"]);
+                }, "prices" => function ($q) use ($lang, $currency_id) {
+                    $q->with(['currency' => function ($Q) use ($lang) {
+                        $Q->with(["names" => function ($q) use ($lang) {
+                            if ($lang)
+                            $q->where("language_id", $lang->id);
+                        }]);
+                    }])->where("currency_id", $currency_id);
+                }, "gallery"]);
             },
             "slogans" => function ($q) use ($lang) {
                 if ($lang)
