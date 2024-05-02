@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hotel\Hotel;
 use App\Models\Hotel\Rooms\Room;
 use App\Models\Language;
+use App\Models\Currency;
 use App\Models\Setting;
 
 class HotelController extends Controller
@@ -15,7 +16,8 @@ class HotelController extends Controller
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
-        $lang = Language::where("key", $request->lang)->first();
+        $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
         $hotels = Hotel::with([
             "names" => function ($q) use ($lang) {
                 if ($lang)
@@ -29,7 +31,7 @@ class HotelController extends Controller
                 if ($lang)
                 $q->where("language_id", $lang->id);
             },
-            "rooms" => function ($q) use ($lang) {
+            "rooms" => function ($q) use ($lang, $currency_id) {
                 $q->with(["features" => function ($q) use ($lang) {
                     $q->with(["names" => function ($qe) use ($lang) {
                         if ($lang)
@@ -41,7 +43,14 @@ class HotelController extends Controller
                 },"descriptions" => function ($q) use ($lang) {
                     if ($lang)
                     $q->where("language_id", $lang->id);
-                }, "prices"]);
+                }, "prices" => function ($q) use ($lang, $currency_id) {
+                    $q->with(['currency' => function ($Q) use ($lang) {
+                        $Q->with(["names" => function ($q) use ($lang) {
+                            if ($lang)
+                            $q->where("language_id", $lang->id);
+                        }]);
+                    }])->where("currency_id", $currency_id);
+                }]);
             },
             "slogans" => function ($q) use ($lang) {
                 if ($lang)
