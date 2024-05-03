@@ -13,6 +13,8 @@ class DestinationController extends Controller
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
+
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first();
 
         $destinations = Destination::with(
