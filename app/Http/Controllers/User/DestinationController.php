@@ -17,7 +17,7 @@ class DestinationController extends Controller
 
         $destinations = Destination::with(
             [
-                'hotels' => function ($q) use ($lang, $sortKey, $sortWay) {
+                'hotels' => function ($q) use ($lang, $sortKey, $sortWay, $currency_id) {
                     $q->with([
                         "names" => function ($q) use ($lang) {
                             if ($lang)
@@ -83,7 +83,7 @@ class DestinationController extends Controller
                         }
                     ])->orderBy($sortKey, $sortWay);
                 }
-                , 'tours' => function ($q) use ($lang, $sortKey, $sortWay) {
+                , 'tours' => function ($q) use ($lang, $sortKey, $sortWay, $currency_id) {
                     $q->with([
                         "ratings" => function($q) {
                             $q->with("user")->where("approved", true);
@@ -112,14 +112,21 @@ class DestinationController extends Controller
                         if ($lang)
                         $q->where("language_id", $lang->id);
                     },
-                    "packages" => function ($q) use ($lang) {
+                    "packages" => function ($q) use ($lang, $currency_id) {
                         $q->with(["titles" => function ($q) use ($lang) {
                             if ($lang)
                             $q->where("language_id", $lang->id);
                         }, "descriptions" => function ($q) use ($lang) {
                             if ($lang)
                             $q->where("language_id", $lang->id);
-                        }, "prices", "points" => function ($q) use ($lang) {
+                        },"prices" => function ($q) use ($lang, $currency_id) {
+                            $q->with(['currency' => function ($Q) use ($lang) {
+                                $Q->with(["names" => function ($q) use ($lang) {
+                                    if ($lang)
+                                    $q->where("language_id", $lang->id);
+                                }]);
+                            }])->where("currency_id", $currency_id);
+                        }, "points" => function ($q) use ($lang) {
                             $q->with(["titles" => function ($q) use ($lang) {
                                 if ($lang)
                                 $q->where("language_id", $lang->id);
