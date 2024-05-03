@@ -31,7 +31,7 @@ class DestinationController extends Controller
                             if ($lang)
                             $q->where("language_id", $lang->id);
                         },
-                        "rooms" => function ($q) use ($lang) {
+                        "rooms" => function ($q) use ($lang, $currency_id) {
                             $q->with(["features" => function ($q) use ($lang) {
                                 $q->with(["names" => function ($qe) use ($lang) {
                                     if ($lang)
@@ -43,7 +43,14 @@ class DestinationController extends Controller
                             },"descriptions" => function ($q) use ($lang) {
                                 if ($lang)
                                 $q->where("language_id", $lang->id);
-                            }, "prices"]);
+                            }, "prices" => function ($q) use ($lang, $currency_id) {
+                                $q->with(['currency' => function ($Q) use ($lang) {
+                                    $Q->with(["names" => function ($q) use ($lang) {
+                                        if ($lang)
+                                        $q->where("language_id", $lang->id);
+                                    }]);
+                                }])->where("currency_id", $currency_id);
+                            }]);
                         },
                         "slogans" => function ($q) use ($lang) {
                             if ($lang)
