@@ -18,6 +18,7 @@ class HotelController extends Controller
         // $currency_id = 2;
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
         $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
+
         $hotels = Hotel::with([
             "names" => function ($q) use ($lang) {
                 if ($lang)
@@ -81,7 +82,11 @@ class HotelController extends Controller
                     $q->where("language_id", $lang->id);
                 }, "gallery"]);
             }
-        ])->orderBy($sortKey, $sortWay)->get();
+        ])->when($request->filter && $request->filter->minPrice && $request->filter->maxPrice, function ($query) use ($request) {
+            return $query->whereBetween('lowest_room_price', [$request->filter->minPrice, $request->filter->maxPrice]);
+        }, function ($query) {
+            return $query; // No filtering applied if no filter is provided
+        })->orderBy($sortKey, $sortWay)->get();
 
         return response()->json(
             $hotels
