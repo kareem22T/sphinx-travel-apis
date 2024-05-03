@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Destination;
 use App\Models\Language;
+use App\Models\Currency;
 
 class DestinationController extends Controller
 {
