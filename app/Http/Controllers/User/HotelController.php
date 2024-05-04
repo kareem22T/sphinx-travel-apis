@@ -241,7 +241,11 @@ class HotelController extends Controller
                     $q->where("language_id", $lang->id);
                 }, "gallery"]);
             }
-        ])->get();
+        ])->when($request->filter && $request->filter["minPrice"] && $request->filter["maxPrice"], function ($query) use ($request) {
+            return $query->whereBetween('lowest_room_price', [$request->filter["minPrice"], $request->filter["maxPrice"]]);
+        }, function ($query) {
+            return $query; // No filtering applied if no filter is provided
+        })->get();
 
         return response()->json(
             $hotels
