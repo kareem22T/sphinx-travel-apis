@@ -12,7 +12,7 @@ use App\Http\Controllers\User\RateController;
 use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\DestinationController;
 use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\User\SearchController;
 Route::get('/', function () {
     return view('welcome');
 });
