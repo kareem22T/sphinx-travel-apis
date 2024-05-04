@@ -30,7 +30,7 @@ Route::get("/get-hotel-restaurent", [HotelController::class, "getHotelNearstRest
 Route::get("/get-tours", [TourController::class, "getTours"]);
 Route::get("/get-home-tours", [TourController::class, "getHomeTours"]);
 Route::get("/get-tour", [TourController::class, "getTour"]);
-Route::get("/get-tour-search", [SearchController::class, "getTour"]);
+Route::get("/get-tour-search", [SearchController::class, "getTours"]);
 Route::get("/get-resturante", [RestaurantController::class, "nearestRestaurants"]);
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
