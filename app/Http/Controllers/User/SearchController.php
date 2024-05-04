@@ -160,7 +160,7 @@ class SearchController extends Controller
             return $query->whereHas('names', function ($q) use ($request) {
                 $q->where('title', 'LIKE', "%{$request->search_words}%");
             })->orWhereHas('descriptions', function ($q) use ($request) {
-                $q->where('content', 'LIKE', "%{$request->search_words}%");
+                $q->where('description', 'LIKE', "%{$request->search_words}%");
             });
             // Add other whereHas clauses for additional related fields
         })->orderBy($sortKey, $sortWay)->get();
