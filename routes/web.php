@@ -12,12 +12,14 @@ use App\Http\Controllers\User\RateController;
 use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\DestinationController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\SearchController;
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get("/get-home-rooms", [HotelController::class, "getRomms"]);
 Route::get("/get-hotels", [HotelController::class, "getHotels"]);
+Route::get("/get-hotels-search", [SearchController::class, "getHotels"]);
 Route::get("/get-destinations", [DestinationController::class, "getDestinations"]);
 Route::get("/get-home-hotels", [HotelController::class, "getHomeHotels"]);
 Route::get("/get-home-ad", [SettingsController::class, "getHomeAd"]);
@@ -28,6 +30,7 @@ Route::get("/get-hotel-restaurent", [HotelController::class, "getHotelNearstRest
 Route::get("/get-tours", [TourController::class, "getTours"]);
 Route::get("/get-home-tours", [TourController::class, "getHomeTours"]);
 Route::get("/get-tour", [TourController::class, "getTour"]);
+Route::get("/get-tour-search", [SearchController::class, "getTour"]);
 Route::get("/get-resturante", [RestaurantController::class, "nearestRestaurants"]);
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
