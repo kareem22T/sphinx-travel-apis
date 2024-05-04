@@ -9,6 +9,7 @@ use App\Models\Hotel\Rooms\Room;
 use App\Models\Language;
 use App\Models\Currency;
 use App\Models\Setting;
+use App\Models\Tour\Tour;
 
 class SearchController extends Controller
 {
