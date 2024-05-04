@@ -157,7 +157,7 @@ class SearchController extends Controller
             }
             ]);
         },])->when($request->search_words, function ($query) use ($request) {
-            return $query->whereHas('names', function ($q) use ($request) {
+            return $query->whereHas('titles', function ($q) use ($request) {
                 $q->where('title', 'LIKE', "%{$request->search_words}%");
             })->orWhereHas('descriptions', function ($q) use ($request) {
                 $q->where('description', 'LIKE', "%{$request->search_words}%");
