@@ -71,15 +71,7 @@ class TourController extends Controller
             ]);
             }
             ]);
-        },])->orderBy($sortKey, $sortWay)->when($request->filter && $request->filter["minPrice"] && $request->filter["maxPrice"], function ($query) use ($request) {
-            return $query->whereBetween('lowest_package_price', [$request->filter["minPrice"], $request->filter["maxPrice"]]);
-        }, function ($query) {
-            return $query; // No filtering applied if no filter is provided
-        })->when($request->filter && $request->filter["adults"], function ($query) use ($request) {
-            return $query->where('max_participant', ">=", [$request->filter["adults"]]);
-        }, function ($query) {
-            return $query; // No filtering applied if no filter is provided
-        })->get();
+        },])->orderBy($sortKey, $sortWay)->get();
         return $tours;
     }
     public function getTour(Request $request) {
