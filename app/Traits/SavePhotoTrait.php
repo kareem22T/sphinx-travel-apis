@@ -6,7 +6,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 trait SavePhotoTrait
 {
-   function saveImg($photo, $folder, $name = null, $size = 500)
+   function saveImg($photo, $folder, $name = null, $size = 300)
    {
     $file_extension = $photo->getClientOriginalExtension();
 
