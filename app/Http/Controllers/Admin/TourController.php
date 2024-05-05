@@ -909,6 +909,7 @@ class TourController extends Controller
         }
 
         $tour = Tour::with([
+            "activities",
             "titles",
             "intros",
             "locations",

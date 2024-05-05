@@ -19,6 +19,7 @@ class TourController extends Controller
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
 
         $tours = Tour::with([
+            "activities",
             "ratings" => function($q) {
                 $q->with("user")->where("approved", true);
             },
@@ -79,6 +80,7 @@ class TourController extends Controller
         $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
 
         $tour = Tour::with([
+        "activities",
         "ratings",
         "titles" => function ($q) use ($lang) {
             if ($lang)
