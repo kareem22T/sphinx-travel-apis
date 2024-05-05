@@ -58,6 +58,7 @@ Route::post('/login', [AuthController::class, 'login']);
     // activities
     Route::prefix("activities")->group(function () {
         Route::get("/", [ActivitiesController::class, 'get']);
+        Route::get("/activity", [ActivitiesController::class, 'activity']);
         Route::post("/add", [ActivitiesController::class, 'add']);
         Route::post("/update", [ActivitiesController::class, 'update']);
         Route::post("/delete", [ActivitiesController::class, 'delete']);

@@ -113,5 +113,21 @@ class ActivitiesController extends Controller
         if ($currnecy)
             return  $this->jsondata(true, null, 'Activity has deleted successfuly', [], []);
     }
+    public function activity(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Show failed', [$validator->errors()->first()], []);
+        }
+
+        $activity = Activity::find($request->id);
+
+        return $activity;
+    }
+
+
 }
 
