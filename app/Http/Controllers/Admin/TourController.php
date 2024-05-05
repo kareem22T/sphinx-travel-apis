@@ -671,8 +671,8 @@ class TourController extends Controller
             $tour->max_participant = $request->max_participant ? $request->max_participant : 0;
             $tour->destination_id = $request->tour_destination;
 
+        $tour->activities()->detach();
         if ($request->activities) {
-            $tour->activities()->detach();
 
             // add hotel features
             foreach ($request->activities as $activity) {
