@@ -274,6 +274,16 @@ class TourController extends Controller
             "max_participant" => $request->max_participant
         ]);
 
+        if ($request->activities) {
+
+            foreach ($request->activities as $activity) {
+                $tour->activities()->attach([$activity['id']]);
+            }
+
+
+        }
+
+
         if ($tour) :
             // Add Titles
             foreach ($request->titles as $lang => $title) {
@@ -660,6 +670,18 @@ class TourController extends Controller
             $tour->min_participant = $request->min_participant ? $request->min_participant : 0;
             $tour->max_participant = $request->max_participant ? $request->max_participant : 0;
             $tour->destination_id = $request->tour_destination;
+
+        if ($request->activities) {
+
+            $tour->activities()->detach();
+            // add hotel features
+            foreach ($request->activities as $activity) {
+                $tour->activities()->attach([$activity['id']]);
+            }
+
+
+        }
+
 
         if ($tour) :
             // Add Titles

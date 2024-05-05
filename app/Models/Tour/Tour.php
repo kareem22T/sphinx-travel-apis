@@ -81,6 +81,11 @@ class Tour extends Model
     {
         return $this->belongsTo('App\Models\Destination', 'destination_id');
     }
+    public function activities()
+    {
+        return $this->belongsToMany('App\Models\Activity', 'tour_activities', 'tour_id', 'activity_id', 'id', 'id');
+    }
+
 
 
 }
