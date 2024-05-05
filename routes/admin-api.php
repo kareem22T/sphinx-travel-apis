@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\MessangerController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\RateController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\ActivitiesController;
 
 
 
@@ -52,6 +53,14 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/add", [DestinationController::class, 'add']);
         Route::post("/update", [DestinationController::class, 'update']);
         Route::post("/delete", [DestinationController::class, 'delete']);
+    });
+
+    // activities
+    Route::prefix("activities")->group(function () {
+        Route::get("/", [ActivitiesController::class, 'get']);
+        Route::post("/add", [ActivitiesController::class, 'add']);
+        Route::post("/update", [ActivitiesController::class, 'update']);
+        Route::post("/delete", [ActivitiesController::class, 'delete']);
     });
 
     // Languages
