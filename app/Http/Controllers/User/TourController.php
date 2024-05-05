@@ -81,8 +81,10 @@ class TourController extends Controller
 
         $tour = Tour::with([
         "activities",
-        "ratings",
-        "titles" => function ($q) use ($lang) {
+        "ratings" => function($q) {
+            $q->with("user")->where("approved", true);
+        },
+    "titles" => function ($q) use ($lang) {
             if ($lang)
             $q->where("language_id", $lang->id);
         }, "intros" => function ($q) use ($lang) {
@@ -142,8 +144,11 @@ class TourController extends Controller
 
         if ($settings) {
             $tour = Tour::latest()->whereIn('id', json_decode($settings->data))->with([
-            "ratings",
-            "titles" => function ($q) use ($lang) {
+                "activities",
+                "ratings" => function($q) {
+                    $q->with("user")->where("approved", true);
+                },
+                "titles" => function ($q) use ($lang) {
                 if ($lang)
                 $q->where("language_id", $lang->id);
             }, "intros" => function ($q) use ($lang) {
