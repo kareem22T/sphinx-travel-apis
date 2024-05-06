@@ -132,4 +132,44 @@ class SettingsController extends Controller
         if ($ad)
             return json_decode($ad->data);
     }
+    public function setHomeAd2(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'ad2' => 'required',
+            'thumbnail' => 'required'
+        ], [
+        ]);
+
+        if ($validator->fails()) {
+            return $this->jsondata(false, null, 'Set Ad2 failed', [$validator->errors()->first()], []);
+        }
+
+
+        $data = $request->ad2;
+        $image = $this->saveImg($request->thumbnail, 'images/uploads/Ad2');
+
+        $data["thumbnail_path"] = '/images/uploads/Ad2/' . $image;
+
+        $settings = Setting::where("key", "ad2") ->first();
+
+        if ($settings) {
+            $settings->data = json_encode($data);
+            $settings->save();
+        } else {
+            $settings = Setting::create([
+                "key" => "ad2",
+                "data" => json_encode($data)
+            ]);
+        }
+
+        if ($settings) {
+            return $this->jsondata(true, null, 'Home Ad2 setted successfuly', [], []);
+        }
+    }
+
+    public function getHomeAd2() {
+        $Ad2 = Setting::where("key", "ad2") ->first();
+
+        if ($Ad2a)
+            return json_decode($ad2->data);
+    }
 }
