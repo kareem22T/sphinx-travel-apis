@@ -14,8 +14,8 @@ class SettingsController extends Controller
 
         return response()->json([
 
-            "ad" => $ad ? json_encode($ad->data) : null,
-            "ad2" => $ad2 ? json_encode($ad2->data) : null,
+            "ad" => $ad ? json_decode($ad->data) : null,
+            "ad2" => $ad2 ? json_decode($ad2->data) : null,
         ], 200);
     }
 }
