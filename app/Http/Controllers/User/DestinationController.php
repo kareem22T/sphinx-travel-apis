@@ -88,6 +88,7 @@ class DestinationController extends Controller
                 }
                 , 'tours' => function ($q) use ($lang, $sortKey, $sortWay, $currency_id) {
                     $q->with([
+                        "activities",
                         "ratings" => function($q) {
                             $q->with("user")->where("approved", true);
                         },
