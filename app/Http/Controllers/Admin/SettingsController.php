@@ -169,7 +169,7 @@ class SettingsController extends Controller
     public function getHomeAd2() {
         $Ad2 = Setting::where("key", "ad2") ->first();
 
-        if ($Ad2a)
+        if ($Ad2)
             return json_decode($ad2->data);
     }
 }
