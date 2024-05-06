@@ -170,6 +170,6 @@ class SettingsController extends Controller
         $Ad2 = Setting::where("key", "ad2") ->first();
 
         if ($Ad2)
-            return json_decode($ad2->data);
+            return json_decode($Ad2->data);
     }
 }
