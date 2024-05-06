@@ -10,7 +10,7 @@ class SettingsController extends Controller
 {
     public function getHomeAd() {
         $ad = Setting::where("key", "ad")->first();
-        $ad2 = Setting::where("key", "ad_2")->first();
+        $ad2 = Setting::where("key", "ad2")->first();
 
         return response()->json([
 
