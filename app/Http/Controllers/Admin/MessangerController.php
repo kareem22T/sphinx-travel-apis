@@ -17,12 +17,12 @@ class MessangerController extends Controller
         $chats = User::with(["messages" => function($q) {
             $q->latest();
         }])->whereHas("messages")->take(100)->get();
-    
+
         $sortedChats = $chats->sortByDesc(function ($chat) {
             $latestMessage = $chat->messages->first(); // Get the latest message from the user
             return $latestMessage ? $latestMessage->created_at : null; // Use created_at of latest message, null if no messages
         });
-        
+
         return $sortedChats->values()->all(); // Return the collection as an array
     }
 
@@ -49,7 +49,7 @@ class MessangerController extends Controller
 
         $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
         $deviceToken = "/topics/MsgUser_" . $request->user_id;
-        
+
         $response = Http::withHeaders([
                 'Authorization' => 'key=' . $serverKey,
                 'Content-Type' => 'application/json',
@@ -61,7 +61,7 @@ class MessangerController extends Controller
                     'body' => $request->msg,
                     'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
                 ],
-            ]);    
+            ]);
 
         if ($message)
             return true;
@@ -87,7 +87,7 @@ class MessangerController extends Controller
     public function testPush () {
         $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
         $deviceToken = "/topics/adminMessagesChannel";
-        
+
         $response = Http::withHeaders([
                 'Authorization' => 'key=' . $serverKey,
                 'Content-Type' => 'application/json',
@@ -100,7 +100,7 @@ class MessangerController extends Controller
                     'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
                 ],
             ]);
-        
+
         // You can then check the response as needed
         if ($response->successful()) {
             // Request was successful
@@ -113,4 +113,9 @@ class MessangerController extends Controller
         }
 
     }
+
+    public function pushNotificationToAll(Request $request) {
+        return $this->pushNotification("hello", "user");
+    }
+
 }

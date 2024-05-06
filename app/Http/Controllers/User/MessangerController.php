@@ -46,4 +46,5 @@ class MessangerController extends Controller
         }
         return $messages;
     }
+
 }
