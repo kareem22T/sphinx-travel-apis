@@ -107,7 +107,7 @@ class RateController extends Controller
                 'msg_id' => 'required',
                 'tour_id' => 'required',
                 'rate' => 'required',
-                'describe' => 'required',
+                // 'describe' => 'required',
             ], );
 
             if ($validator->fails()) {
@@ -125,7 +125,7 @@ class RateController extends Controller
             $rate = Tour_rating::create([
                 "tour_id" => $request->tour_id,
                 "user_id" => $user->id,
-                "describe" => $request->describe,
+                "describe" => $request->describe ? $request->describe : null,
                 "approved" => $request->describe ? false : true,
                 "rate" => (int) $request->rate,
             ]);
