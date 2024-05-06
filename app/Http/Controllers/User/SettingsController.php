@@ -10,8 +10,11 @@ class SettingsController extends Controller
 {
     public function getHomeAd() {
         $ad = Setting::where("key", "ad")->first();
+        $ad2 = Setting::where("key", "ad_2")->first();
 
-        if ($ad)
-            return json_decode($ad->data);
+        return response()->json([
+            "ad" => $ad ? $ad->data : null,
+            "ad2" => $ad2 ? $ad->data : null,
+        ], 200);
     }
 }
