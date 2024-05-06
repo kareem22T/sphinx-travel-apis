@@ -145,5 +145,7 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::get("/get-home-hotels", [SettingsController::class,'getHomeHotels']);
         Route::post("/set-home-ad", [SettingsController::class,'setHomeAd']);
         Route::get("/get-home-ad", [SettingsController::class,'getHomeAd']);
+        Route::post("/set-home-ad2", [SettingsController::class,'setHomeAd2']);
+        Route::get("/get-home-ad2", [SettingsController::class,'getHomeAd2']);
     });
 // });
