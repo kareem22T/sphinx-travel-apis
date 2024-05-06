@@ -13,8 +13,9 @@ class SettingsController extends Controller
         $ad2 = Setting::where("key", "ad_2")->first();
 
         return response()->json([
-            "ad" => $ad ? $ad->data : null,
-            "ad2" => $ad2 ? $ad->data : null,
+
+            "ad" => $ad ? json_encode($ad->data) : null,
+            "ad2" => $ad2 ? json_encode($ad2->data) : null,
         ], 200);
     }
 }
