@@ -1,55 +1,14 @@
 <?php
 
-namespace App\Traits;
+namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Models\Notification;
-use App\Models\User;
-use PHPMailer\PHPMailer\Exception;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
-
-trait PushNotificationTrait
+class NotificationController extends Controller
 {
-    public function pushNotification($title, $body, $user_id = null, $data = null)
-    {
-        $CreateNotification = Notification::create([
-            "user_id" => $user_id,
-            "title" => $title,
-            "body" => $body,
-        ]);
 
-
-        $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
-        $deviceToken = $user_id ? ("/topics/user_" . $user_id) : "/topics/all_users";
-
-        $response = Http::withHeaders([
-                'Authorization' => 'key=' . $serverKey,
-                'Content-Type' => 'application/json',
-            ])
-            ->post('https://fcm.googleapis.com/fcm/send', [
-                'to' => $deviceToken,
-                'notification' => [
-                    'title' => $title,
-                    'body' => $body,
-                    'data' => $data,
-                    'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
-                ],
-            ]);
-
-        // You can then check the response as needed
-        if ($response->successful()) {
-            // Request was successful
-            return $responseData = $response->json();
-            // Handle the response data
-        } else {
-            // Request failed
-            return $errorData = $response->json();
-            // Handle the error data
-        }
-    }
-
-    public function pushNotificationIos($token, $title, $msg) {
+    function sendPushNotification() {
+        ;
             $teamId = '7A55RYWJKX'; // Replace with your Team ID
             $keyId = '82Z9QA7FVZ'; // Replace with your Key ID
             $privateKey = file_get_contents(storage_path('app/apns/AuthKey_82Z9QA7FVZ.p8')); // Replace with the path to your .p8 file
@@ -68,14 +27,14 @@ trait PushNotificationTrait
             // Generate the JWT
             $jwt = JWT::encode($payload, $privateKey, 'ES256', $keyId);
             // APNs URL
-            $url = "https://api.push.apple.com:443/3/device/" . $token;
+            $url = "https://api.push.apple.com:443/3/device/B961F5383E44A4D1A4D26BE7A6DAF1B75277EDF6AA399A53D79E8D657B2E4F1E";
 
             // The payload
             $payload = json_encode([
                 'aps' => [
                     'alert' => [
-                        'title' => $title,
-                        'body' => $msg,
+                        'title' => 'Hello',
+                        'body' => 'Test Msg',
                     ],
                 ],
             ]);
@@ -121,4 +80,6 @@ trait PushNotificationTrait
             return "HTTP status code: {$httpCode}\nResponse: {$response}";
     }
 
+    // $deviceToken = '';
+    // $authToken = 'authentication token value';
 }

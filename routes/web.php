@@ -13,6 +13,8 @@ use App\Http\Controllers\User\SettingsController;
 use App\Http\Controllers\User\DestinationController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\User\SearchController;
+use App\Http\Controllers\NotificationController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -45,3 +47,6 @@ Route::middleware('auth:sanctum')->post('/send-msg', [MessangerController::class
 Route::middleware('auth:sanctum')->post('/rate-hotel', [RateController::class, 'rateHotel']);
 Route::middleware('auth:sanctum')->post('/rate-tour', [RateController::class, 'rateTour']);
 Route::middleware('auth:sanctum')->get('/get-user-messages', [MessangerController::class, 'userMesages']);
+
+
+Route::post('/send-notification', [NotificationController::class, 'sendPushNotification']);
