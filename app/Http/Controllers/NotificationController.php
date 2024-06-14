@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 class NotificationController extends Controller
 {
     function sendPushNotification() {
-
+        return phpinfo();
         $teamId = '7A55RYWJKX'; // Replace with your Team ID
         $keyId = '82Z9QA7FVZ'; // Replace with your Key ID
         $privateKey = file_get_contents(storage_path('app/apns/AuthKey_82Z9QA7FVZ.p8')); // Replace with the path to your .p8 file
