@@ -58,7 +58,7 @@ class NotificationController extends Controller
                 'headers' => $headers,
                 'body' => $notificationPayload,
                 'http_errors' => false, // Disable throwing exceptions on HTTP errors
-                'version' => 2.0, // Ensure HTTP/2
+                // 'version' => 2.0, // Ensure HTTP/2
             ]);
 
             $httpCode = $response->getStatusCode();
