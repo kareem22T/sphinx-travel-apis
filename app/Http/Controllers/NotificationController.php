@@ -26,7 +26,7 @@ class NotificationController extends Controller
             // Generate the JWT
             $jwt = JWT::encode($payload, $privateKey, 'ES256', $keyId);
             // APNs URL
-            $url = "https://api.push.apple.com:443/3/device/B961F5383E44A4D1A4D26BE7A6DAF1B75277EDF6AA399A53D79E8D657B2E4F1E";
+            $url = "https://api.push.apple.com:443/3/device/75136D69B4C0E821E3610EE64F00D2824373757F81C6B5BB7FBECE3D02CAA4E1";
 
             // The payload
             $payload = json_encode([
@@ -57,7 +57,7 @@ class NotificationController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+            // curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 
             // Execute cURL
             $response = curl_exec($ch);
