@@ -58,6 +58,13 @@ class NotificationController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// Check if CURL_HTTP_VERSION_2_0 is defined
+if (defined('CURL_HTTP_VERSION_2_0')) {
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+} else {
+    // Fallback if HTTP/2 is not supported
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+}
 
             // Execute cURL
             $response = curl_exec($ch);
