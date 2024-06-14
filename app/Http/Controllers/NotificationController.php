@@ -8,7 +8,7 @@ class NotificationController extends Controller
 {
 
     function sendPushNotification() {
-                // Define the constant if not already defined
+
             $teamId = '7A55RYWJKX'; // Replace with your Team ID
             $keyId = '82Z9QA7FVZ'; // Replace with your Key ID
             $privateKey = file_get_contents(storage_path('app/apns/AuthKey_82Z9QA7FVZ.p8')); // Replace with the path to your .p8 file
@@ -58,7 +58,7 @@ class NotificationController extends Controller
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            // curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 
             // Execute cURL
             $response = curl_exec($ch);
