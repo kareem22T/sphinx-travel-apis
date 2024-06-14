@@ -25,7 +25,7 @@ class NotificationController extends Controller
             ];
 
             // Generate the JWT
-            return $jwt = JWT::encode($payload, $privateKey, 'ES256', $keyId);
+            $jwt = JWT::encode($payload, $privateKey, 'ES256', $keyId);
             // APNs URL
             $url = "https://api.push.apple.com:443/3/device/75136D69B4C0E821E3610EE64F00D2824373757F81C6B5BB7FBECE3D02CAA4E1";
 
