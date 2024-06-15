@@ -32,7 +32,6 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::post("/cancel", [BookingController::class, 'cancel']);
     });
 
-    Route::post("/push-notification-all", [MessangerController::class, 'pushNotificationToAll']);
     Route::prefix("chats")->group(function () {
         Route::post("/send", [MessangerController::class, 'send']);
         Route::get("/chats", [MessangerController::class, 'getChats']);

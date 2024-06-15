@@ -50,3 +50,4 @@ Route::middleware('auth:sanctum')->get('/get-user-messages', [MessangerControlle
 
 
 Route::post('/send-notification', [NotificationController::class, 'sendPushNotification']);
+Route::post("/push-notification-all", [NotificationController::class, 'pushNotificationToAll']);
