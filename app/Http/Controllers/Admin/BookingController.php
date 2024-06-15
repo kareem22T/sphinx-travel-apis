@@ -50,13 +50,13 @@ class BookingController extends Controller
             if ($booking->status === 1) {
                 $booking->status = 2;
                 $this->pushNotification("Booking Confirmation", "Your Booking have been confirmed successfuly", $booking->user->id);
-                if( $booking->user->apsn_token)
-                    $this->pushNotificationIos($booking->user->apsn_token, "Booking Confirmation", "Your Booking have been confirmed successfuly");
+                // if( $booking->user->apsn_token)
+                //     $this->pushNotificationIos($booking->user->apsn_token, "Booking Confirmation", "Your Booking have been confirmed successfuly");
             } else if ($booking->status === 2) {
                 $booking->status = 3;
                 $this->pushNotification("Booking Completed", "Your Booking have been completed successfuly", $booking->user->id);
-                if( $booking->user->apsn_token)
-                    $this->pushNotificationIos($booking->user->apsn_token, "Booking Completed", "Your Booking have been completed successfuly");
+                // if( $booking->user->apsn_token)
+                //     $this->pushNotificationIos($booking->user->apsn_token, "Booking Completed", "Your Booking have been completed successfuly");
 
                 $message = Message::create(
                     [
