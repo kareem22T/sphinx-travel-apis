@@ -5,13 +5,9 @@ use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use App\Traits\DataFormController;
-use App\Traits\PushNotificationTrait;
 
 class NotificationController extends Controller
 {
-    use DataFormController, PushNotificationTrait;
-
     function sendPushNotification(Request $request) {
         $teamId = '7A55RYWJKX'; // Replace with your Team ID
         $keyId = '82Z9QA7FVZ'; // Replace with your Key ID
@@ -72,9 +68,4 @@ class NotificationController extends Controller
             return "HTTP request error: " . $e->getMessage();
         }
     }
-
-    public function pushNotificationToAll(Request $request) {
-        return $this->pushNotification("hello", "user");
-    }
-
 }

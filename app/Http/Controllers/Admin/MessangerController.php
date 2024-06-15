@@ -114,4 +114,8 @@ class MessangerController extends Controller
 
     }
 
+    public function pushNotificationToAll(Request $request) {
+        return $this->pushNotification("hello", "user");
+    }
+
 }
