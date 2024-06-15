@@ -244,6 +244,12 @@ class UserController extends Controller
     }
 
     public function sedToken(Request $request) {
-        $this->sendEmail("kotbekareem74@gmail.com", "Hello", $request->token ?? "");
+        $user = $request->user();
+        if ($user) {
+            if ($request->token) {
+                $user->apsn_token = $request->token;
+                $user->save();
+            }
+        }
     }
 }

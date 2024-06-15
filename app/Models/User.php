@@ -27,6 +27,7 @@ class User extends Authenticatable
         'join_type',
         'email',
         'password',
+        'apsn_token',
     ];
 
     /**

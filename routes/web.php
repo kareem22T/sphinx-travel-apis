@@ -36,7 +36,7 @@ Route::get("/get-tour-search", [SearchController::class, "getTours"]);
 Route::get("/get-resturante", [RestaurantController::class, "nearestRestaurants"]);
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
-Route::post("/send-token", [UserController::class, "sedToken"]);
+Route::middleware('auth:sanctum')->post("/send-token", [UserController::class, "sedToken"]);
 Route::middleware('auth:sanctum')->post("/get-user-notifications", [UserController::class, "getUserNotifications"]);
 Route::middleware('auth:sanctum')->post("/book", [BookingController::class, "create"]);
 Route::middleware('auth:sanctum')->get("/get-bookings", [BookingController::class, "get"]);
