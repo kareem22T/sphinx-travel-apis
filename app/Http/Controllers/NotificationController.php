@@ -34,8 +34,8 @@ class NotificationController extends Controller
         $notificationPayload = json_encode([
             'aps' => [
                 'alert' => [
-                    'title' => 'Hello',
-                    'body' => 'Test Msg',
+                    'title' => $request->title,
+                    'body' => $request->msg,
                 ],
             ],
         ]);
