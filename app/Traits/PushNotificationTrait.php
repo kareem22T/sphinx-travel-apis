@@ -55,7 +55,7 @@ trait PushNotificationTrait
         $response = Http::post($url, [
             'token' => $token,
             'title' => $title,
-            'message' => $msg,
+            'msg' => $msg,
         ]);
 
         return $response->body();
