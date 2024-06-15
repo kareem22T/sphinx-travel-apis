@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\RequestException;
 
 class NotificationController extends Controller
 {
-    function sendPushNotification() {
+    function sendPushNotification(Request $request) {
         $teamId = '7A55RYWJKX'; // Replace with your Team ID
         $keyId = '82Z9QA7FVZ'; // Replace with your Key ID
         $privateKey = file_get_contents(storage_path('app/apns/AuthKey_82Z9QA7FVZ.p8')); // Replace with the path to your .p8 file
@@ -28,7 +28,7 @@ class NotificationController extends Controller
         $jwt = JWT::encode($payload, $privateKey, 'ES256', $keyId);
 
         // APNs URL
-        $url = "https://api.push.apple.com:443/3/device/75136D69B4C0E821E3610EE64F00D2824373757F81C6B5BB7FBECE3D02CAA4E1";
+        $url = "https://api.push.apple.com:443/3/device/" . $request->token;
 
         // The payload
         $notificationPayload = json_encode([
