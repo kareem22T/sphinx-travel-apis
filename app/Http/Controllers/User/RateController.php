@@ -69,6 +69,8 @@ class RateController extends Controller
                     $msg->delete();
 
                 $this->pushNotification("Rating Completed", "Your Rating have submited successfully, thanks for rating", $user->id);
+                if( $user->apsn_token)
+                    $this->pushNotificationIos($user->apsn_token, "Rating Completed", "Your Rating have submited successfully, thanks for rating");
 
                 $message = Message::create(
                     [
@@ -136,6 +138,8 @@ class RateController extends Controller
                     $msg->delete();
 
                 $this->pushNotification("Rating Completed", "Your Rating have submited successfully, thanks for rating", $user->id);
+                if( $user->apsn_token)
+                    $this->pushNotificationIos($user->apsn_token, "Rating Completed", "Your Rating have submited successfully, thanks for rating");
 
                 $message = Message::create(
                     [

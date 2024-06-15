@@ -55,6 +55,8 @@ class BookingController extends Controller
             } else if ($booking->status === 2) {
                 $booking->status = 3;
                 $this->pushNotification("Booking Completed", "Your Booking have been completed successfuly", $booking->user->id);
+                if( $booking->user->apsn_token)
+                    $this->pushNotificationIos($booking->user->apsn_token, "Booking Completed", "Your Booking have been completed successfuly");
 
                 $message = Message::create(
                     [
@@ -100,6 +102,8 @@ class BookingController extends Controller
         if ($booking) :
             $booking->status = 4;
             $this->pushNotification("Booking Canceled", "Your Booking have not completed unfortunately", $booking->user->id);
+            if( $booking->user->apsn_token)
+                $this->pushNotificationIos($booking->user->apsn_token, "Booking Canceled", "Your Booking have not completed unfortunately");
             $booking->save();
         endif;
 
