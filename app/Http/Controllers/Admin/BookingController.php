@@ -102,8 +102,8 @@ class BookingController extends Controller
         if ($booking) :
             $booking->status = 4;
             $this->pushNotification("Booking Canceled", "Your Booking have not completed unfortunately", $booking->user->id);
-            if( $booking->user->apsn_token)
-                $this->pushNotificationIos($booking->user->apsn_token, "Booking Canceled", "Your Booking have not completed unfortunately");
+            // if( $booking->user->apsn_token)
+            //     $this->pushNotificationIos($booking->user->apsn_token, "Booking Canceled", "Your Booking have not completed unfortunately");
             $booking->save();
         endif;
 
