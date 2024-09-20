@@ -1,63 +1,67 @@
 <?php
-
 namespace App\Traits;
-
-use Illuminate\Support\Facades\Auth;
-use App\Models\Notification;
-use App\Models\User;
-use PHPMailer\PHPMailer\Exception;
+use Google\Client as Google_Client;  // Ensure the correct namespace
 use Illuminate\Support\Facades\Http;
-use Firebase\JWT\JWT;
+use App\Models\Notification;
 
 trait PushNotificationTrait
 {
     public function pushNotification($title, $body, $user_id = null, $data = null)
     {
+        // Create a new notification record
         $CreateNotification = Notification::create([
             "user_id" => $user_id,
             "title" => $title,
             "body" => $body,
         ]);
 
+        // Initialize the Google Client
+        $client = new Google_Client();
+        $client->setAuthConfig(storage_path('app/sphinx-travel-d17f5-firebase-adminsdk-vxcus-773161a904.json'));  // Load the service account JSON file
+        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
-        $serverKey = 'AAAA-0IfxKc:APA91bEose-nnQ_9aWfGbJkJCx8c-w66gahaB5BgS3TXVKWDph-Wd41myHvV9ME-yjwUAARdH9_xC9b8nLUn6MCaKto3kKyn40cL3jnO1kGrqo3lDrW4uPY7cNSRLCTcNaNOdyQG8mT8';
-        $deviceToken = $user_id ? ("/topics/user_" . $user_id) : "/topics/all_users";
+        // Fetch the access token
+        $accessToken = $client->fetchAccessTokenWithAssertion()['access_token'];
 
+        // Determine if we are using a token or a topic
+        if ($user_id) {
+            // Fetch the user's device token from the database or however it's stored
+            // $deviceToken = "user's_device_token";
+            $deviceToken = $this->getUserDeviceToken($user_id);  // Create a method to fetch this if needed
+            $messageTarget = ['token' => $deviceToken];  // Use 'token' for device-specific push
+        } else {
+            $messageTarget = ['topic' => 'all_users'];  // Use 'topic' for broadcast
+        }
+
+        // Send the push notification
         $response = Http::withHeaders([
-                'Authorization' => 'key=' . $serverKey,
+                'Authorization' => 'Bearer ' . $accessToken,
                 'Content-Type' => 'application/json',
             ])
-            ->post('https://fcm.googleapis.com/fcm/send', [
-                'to' => $deviceToken,
-                'notification' => [
-                    'title' => $title,
-                    'body' => $body,
-                    'data' => $data,
-                    'icon' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
-                ],
+            ->post('https://fcm.googleapis.com/v1/projects/sphinx-travel-d17f5/messages:send', [
+                'message' => array_merge($messageTarget, [
+                    'notification' => [
+                        'title' => $title,
+                        'body' => $body,
+                    ],
+                    'data' => array_merge($data ?? [], [
+                        'icon_url' => "https://sphinx-travel.ykdev.online/11Sphinx.png"
+                    ])
+                ]),
             ]);
 
-        // You can then check the response as needed
+        // Handle the response
         if ($response->successful()) {
-            // Request was successful
-            return $responseData = $response->json();
-            // Handle the response data
+            return $response->json();
         } else {
-            // Request failed
-            return $errorData = $response->json();
-            // Handle the error data
+            return $response->json();
         }
     }
 
-    public function pushNotificationIos($token, $title, $msg) {
-        $url = 'https://sphinx-travel-push-noti.ykdev.online/send-notification';
-
-        $response = Http::post($url, [
-            'token' => $token,
-            'title' => $title,
-            'msg' => $msg,
-        ]);
-
-        return $response->body();
+    // Example function to get the user's device token
+    private function getUserDeviceToken($user_id)
+    {
+        // Fetch from your database or relevant storage
+        return "the_user_device_token";  // Replace with actual logic to fetch the token
     }
-}
+    }
