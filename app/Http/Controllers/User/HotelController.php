@@ -13,7 +13,6 @@ use App\Models\Setting;
 class HotelController extends Controller
 {
     public function getHotels(Request $request) {
-        return "hello";
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
