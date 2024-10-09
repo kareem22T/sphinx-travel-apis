@@ -13,13 +13,12 @@ use App\Models\Setting;
 class HotelController extends Controller
 {
     public function getHotels(Request $request) {
+        return "hello";
         $sortKey =($request->sort && $request->sort == "HP") || ( $request->sort && $request->sort == "LP") ? "lowest_room_price" :"avg_rating";
         $sortWay = $request->sort && $request->sort == "HP" ? "desc" : ( $request->sort && $request->sort  == "LP" ? "asc" : "desc");
         // $currency_id = 2;
         $lang = Language::where("key", $request->lang ? $request->lang : "EN")->first() ? Language::where("key", $request->lang ? $request->lang : "EN")->first() : Language::where("key", "EN")->first();
-        $currency = Currency::find($request->currency_id);
-
-        $currency_id = $currency ? $currency->id : Currency::first()->id;
+        $currency_id = Currency::find($request->currency_id) ? Currency::find($request->currency_id)->id : Currency::first()->id;
 
         $hotels = Hotel::with([
             "names" => function ($q) use ($lang) {
